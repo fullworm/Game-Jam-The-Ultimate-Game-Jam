@@ -31,13 +31,13 @@ class LevelState(state):
             self.paused *= -1
         if (not self.paused):
             if keys[pygame.K_w]:
-                self.player.move(0, -PLAYERSPEED, self.room.walls)
+                self.player.move(0, -PLAYERSPEED, self.room.walls, self.room.entities)
             if keys[pygame.K_s]:
-                self.player.move(0, PLAYERSPEED, self.room.walls)
+                self.player.move(0, PLAYERSPEED, self.room.walls, self.room.entities)
             if keys[pygame.K_d]:
-                self.player.move(PLAYERSPEED, 0, self.room.walls)
+                self.player.move(PLAYERSPEED, 0, self.room.walls, self.room.entities)
             if keys[pygame.K_a]:
-                self.player.move(-PLAYERSPEED, 0, self.room.walls)
+                self.player.move(-PLAYERSPEED, 0, self.room.walls, self.room.entities)
             
 
     def update(self):

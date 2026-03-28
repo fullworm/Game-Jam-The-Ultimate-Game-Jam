@@ -26,7 +26,7 @@ class Entity:
             if xcoll and ycoll:
                 return True
 
-    def move(self, x, y, walls, enemies = []):
+    def move(self, x, y, walls, enemies):
         self.x += x
         self.y += y
 
