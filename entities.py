@@ -8,13 +8,25 @@ class Entity:
 
     def draw(self, surface):
         # Todo: temporary
-        pygame.draw.rect(surface, (255, 0, 0), (self.x, self.y, TILESIZE, TILESIZE))
+        pygame.draw.rect(surface, (255, 0, 0), (self.x, self.y, CHARACTERSIZE, CHARACTERSIZE))
 
-    def move(self, x, y):
+    # Todo: these use walls and I dont like it
+    def collides(self, walls):
+        if walls[self.y // TILESIZE][self.x // TILESIZE] == 1:
+            return True
+        if walls[(self.y + CHARACTERSIZE) // TILESIZE][self.x // TILESIZE] == 1:
+            return True
+        if walls[self.y // TILESIZE][(self.x + CHARACTERSIZE) // TILESIZE] == 1:
+            return True
+        if walls[(self.y + CHARACTERSIZE) // TILESIZE][(self.x + CHARACTERSIZE) // TILESIZE] == 1:
+            return True
+        return False
+
+    def move(self, x, y, walls):
         self.x += x
         self.y += y
 
-        if (-1 < self.x < GAMEX) is not True or (-1 < self.y < GAMEY) is not True:
+        if self.collides(walls):
             self.x -= x
             self.y -= y
 
