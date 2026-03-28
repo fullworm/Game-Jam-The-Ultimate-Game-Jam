@@ -1,4 +1,4 @@
-import pygame, Room
+import pygame, Room, entities
 from constants import *
 
 # ============================== LEVEL 1 ==============================
@@ -46,7 +46,7 @@ lvl1Left = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    None
+    [entities.Enemy(TILESIZE, TILESIZE, BASIENEMYSIZE)]
 )
 lvl1Right = Room.Room(
     {"Up": None,
