@@ -22,7 +22,7 @@ class StateManager(state):
                 self.playing = False
             elif (next == "Level 1"):
                 self.state.clean_up()
-                self.state = LevelState(self.playSurface, "Level 1")
+                self.state = LevelState(self.playSurface, "Level 1", self.surface)
                 self.playing = True
 
         if hasattr(self.state, 'player_input'):

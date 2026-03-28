@@ -6,17 +6,18 @@ from pygame_widgets.button import ButtonArray
 from sys import exit
 
 class LevelState(state):
-    def __init__(self, surface, level):
+    def __init__(self, surface, level, screen):
         super().__init__("LevelState", surface)
 
         self.player = entities.Player(int(TILESIZE * 5.5), int(TILESIZE * 5.5))
         self.room = None
         self.paused = False
+        self.screen = screen
 
         self.pauseMenu = ButtonArray(
-            self.surface,
-            (GAMEX - 500) // 2,
-            (GAMEY - 500) // 2,
+            self.screen,
+            (SCREENX - 500) // 2,
+            (SCREENY - 500) // 2,
             500,
             500,
             (3,1), 
