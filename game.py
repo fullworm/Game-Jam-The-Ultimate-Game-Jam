@@ -8,16 +8,12 @@ pygame.init()
 screen = pygame.display.set_mode(SCREENSIZE)
 surface = pygame.Surface(GAMESIZE)
 
-state_manager = StateManager(screen)
+state_manager = StateManager(screen, surface)
 
 pygame.display.set_caption("Super Awesome Omega game")
 
 clock = pygame.time.Clock()
 running = True
-
-# -------------------- Loading --------------------
-player = entities.Player(TILESIZE * 2, TILESIZE * 2)
-room = levels.lvl1Start
 
 # ============================== GAME LOOP ==============================
 while running:
@@ -30,31 +26,6 @@ while running:
             running = False
 
         # Key Press
-
-    # Key Hold
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player.move(0, -PLAYERSPEED, room.walls, room.entities)
-    if keys[pygame.K_s]:
-        player.move(0, PLAYERSPEED, room.walls, room.entities)
-    if keys[pygame.K_d]:
-        player.move(PLAYERSPEED, 0, room.walls, room.entities)
-    if keys[pygame.K_a]:
-        player.move(-PLAYERSPEED, 0, room.walls, room.entities)
-
-    # # -------------------- Game Logic --------------------
-    newRoom = player.change_room(room, levels.lvl1)
-    if newRoom is not None:
-        room = newRoom
-
-    # # -------------------- Draw --------------------
-    surface.fill((0, 0, 128))
-
-    room.draw(surface)
-    if room.entities is not None:
-        for enemy in room.entities:
-            enemy.draw(surface)
-    player.draw(surface)
 
     screen.blit(surface, ( (SCREENX / 2) - (GAMEX / 2), (SCREENY / 2) - (GAMEY / 2) ))
     state_manager.update(events)

@@ -2,13 +2,14 @@ from States.State import state
 import pygame, entities
 from constants import *
 from levels import *
-
+from pygame_widgets.button import ButtonArray
 class LevelState(state):
     def __init__(self, surface, level):
         super().__init__("LevelState", surface)
 
         self.player = entities.Player(TILESIZE * 2, TILESIZE * 2)
         self.room = None
+        self.paused = False
 
         if (level == "Level 1"):
             self.room = lvl1Start
@@ -22,16 +23,22 @@ class LevelState(state):
         #     self.room = lvl5
         self.paused = False
 
+        # self.ButtonArray
+
     def player_input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            self.player.move(0, -PLAYERSPEED, self.room.walls)
-        if keys[pygame.K_s]:
-            self.player.move(0, PLAYERSPEED, self.room.walls)
-        if keys[pygame.K_d]:
-            self.player.move(PLAYERSPEED, 0, self.room.walls)
-        if keys[pygame.K_a]:
-            self.player.move(-PLAYERSPEED, 0, self.room.walls)
+        if (keys[pygame.K_p]):
+            self.paused *= -1
+        if (not self.paused):
+            if keys[pygame.K_w]:
+                self.player.move(0, -PLAYERSPEED, self.room.walls)
+            if keys[pygame.K_s]:
+                self.player.move(0, PLAYERSPEED, self.room.walls)
+            if keys[pygame.K_d]:
+                self.player.move(PLAYERSPEED, 0, self.room.walls)
+            if keys[pygame.K_a]:
+                self.player.move(-PLAYERSPEED, 0, self.room.walls)
+            
 
     def update(self):
         newRoom = self.player.change_room(self.room, lvl1)
@@ -41,6 +48,9 @@ class LevelState(state):
         self.surface.fill((0, 0, 128))
 
         self.room.draw(self.surface)
+        if self.room.entities is not None:
+            for enemy in self.room.entities:
+                enemy.draw(self.surface)
         self.player.draw(self.surface)
 
         

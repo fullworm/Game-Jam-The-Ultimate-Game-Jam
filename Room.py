@@ -2,7 +2,7 @@ import pygame
 from constants import *
 
 class Room:
-    def __init__(self, adjacent_rooms, walls, enemies):
+    def __init__(self, adjacent_rooms, walls, enemies = []):
         self.adjacent_rooms = adjacent_rooms
         self.walls: list[list] = walls
         self.entities: list = enemies
