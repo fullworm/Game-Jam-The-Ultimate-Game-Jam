@@ -25,15 +25,17 @@ while running:
             running = False
 
         # Key Press
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                player.move(0, -TILESIZE)
-            if event.key == pygame.K_s:
-                player.move(0, TILESIZE)
-            if event.key == pygame.K_d:
-                player.move(TILESIZE, 0)
-            if event.key == pygame.K_a:
-                player.move(-TILESIZE, 0)
+
+    # Key Hold
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_w]:
+        player.move(0, -PLAYERSPEED)
+    if keys[pygame.K_s]:
+        player.move(0, PLAYERSPEED)
+    if keys[pygame.K_d]:
+        player.move(PLAYERSPEED, 0)
+    if keys[pygame.K_a]:
+        player.move(-PLAYERSPEED, 0)
 
     # -------------------- Game Logic --------------------
 
