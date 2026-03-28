@@ -19,13 +19,17 @@ class StateManager(state):
             if (next == "LevelChooseState"):
                 self.state.clean_up()
                 self.state = LevelChooseState(self.surface)
+                self.playing = False
             elif (next == "Level 1"):
                 self.state.clean_up()
                 self.state = LevelState(self.playSurface, "Level 1")
                 self.playing = True
 
-        if (self.playing):
+        if hasattr(self.state, 'player_input'):
             self.state.player_input()
+
+        if hasattr(self.state, 'handle_event'):
+            self.state.handle_event(event)
             
-        self.state.update()
+        self.state.update(event)
         pygame_widgets.update(event)

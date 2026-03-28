@@ -23,7 +23,8 @@ class LevelChooseState(state):
                 lambda: self.set_next_state("Level 5")
             )
         )
-    def update(self):
+    def update(self, events= None):
         pass
     def clean_up(self):
         self.LevelArray.hide()
+        self.LevelArray.disable()
