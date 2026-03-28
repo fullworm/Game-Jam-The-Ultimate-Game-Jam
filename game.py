@@ -7,6 +7,8 @@ pygame.init()
 screen = pygame.display.set_mode(SCREENSIZE)
 surface = pygame.Surface(GAMESIZE)
 
+pygame.display.set_caption("Super Awesome Omega game")
+
 clock = pygame.time.Clock()
 running = True
 
