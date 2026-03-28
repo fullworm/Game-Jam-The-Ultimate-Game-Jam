@@ -8,7 +8,7 @@ pygame.init()
 screen = pygame.display.set_mode(SCREENSIZE)
 surface = pygame.Surface(GAMESIZE)
 
-state_manager = StateManager(surface)
+state_manager = StateManager(screen)
 
 pygame.display.set_caption("Super Awesome Omega game")
 
@@ -30,11 +30,6 @@ while running:
             running = False
 
         # Key Press
-    surface.fill((0,0,0))
-
-    state_manager.update(events)
-
-
 
     # Key Hold
     # keys = pygame.key.get_pressed()
@@ -58,8 +53,10 @@ while running:
     # room.draw(surface)
     # player.draw(surface)
 
-    # ----------------------------------------
     screen.blit(surface, ( (SCREENX / 2) - (GAMEX / 2), (SCREENY / 2) - (GAMEY / 2) ))
+    state_manager.update(events)
+
+    # ----------------------------------------
     pygame.display.flip()
     clock.tick(60)
 
