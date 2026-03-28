@@ -2,17 +2,14 @@ import pygame
 from constants import *
 
 class Room:
-    def __init__(self, up, down, left, right, walls, enemies, player):
-        self.up: Room = up
-        self.down: Room = down
-        self.left: Room = left
-        self.right: Room = right
+    def __init__(self, adjacent_rooms, walls, enemies):
+        self.adjacent_rooms = adjacent_rooms
         self.walls: list[list] = walls
         self.entities: list = enemies
-        self.player = player
 
     def draw(self, surface):
-        # doors will be drawn base on if the value passed to them are null or not. Ig this means rooms will be fixed size or we need to find the middle of each wall seperately
-        pass
-    def change_room(self):
-        pass
+        # Todo: temp
+        for y in range(len(self.walls)):
+            for x in range(len(self.walls)):
+                if self.walls[y][x] == 1:
+                    pygame.draw.rect(surface, (128, 128, 128), (x * TILESIZE, y * TILESIZE, TILESIZE, TILESIZE))

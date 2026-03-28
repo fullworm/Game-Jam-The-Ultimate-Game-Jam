@@ -1,4 +1,4 @@
-import pygame, entities, Room
+import pygame, entities, levels
 from constants import *
 
 # -------------------- Setup --------------------
@@ -14,22 +14,9 @@ running = True
 
 # -------------------- Loading --------------------
 player = entities.Player(TILESIZE * 2, TILESIZE * 2)
-# Todo: temp room test
-walls = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],]
-room = Room.Room(None, None, None, None, walls, None, player)
+room = levels.lvl1Start
 
-# ========================= GAME LOOP =============================================
+# ============================== GAME LOOP ==============================
 while running:
 
     # -------------------- Events --------------------
@@ -52,22 +39,20 @@ while running:
         player.move(-PLAYERSPEED, 0, room.walls)
 
     # -------------------- Game Logic --------------------
-
+    newRoom = player.change_room(room, levels.lvl1)
+    if newRoom is not None:
+        room = newRoom
 
     # -------------------- Draw --------------------
     surface.fill((0, 0, 128))
-    player.draw(surface)
 
-    # Todo: temp wall drawing
-    for y in range(len(room.walls)):
-        for x in range(len(room.walls)):
-            if room.walls[y][x] == 1:
-                pygame.draw.rect(surface, (128, 128, 128), (x * TILESIZE, y * TILESIZE, TILESIZE, TILESIZE))
+    room.draw(surface)
+    player.draw(surface)
 
     # ----------------------------------------
     screen.blit(surface, ( (SCREENX / 2) - (GAMEX / 2), (SCREENY / 2) - (GAMEY / 2) ))
     pygame.display.flip()
     clock.tick(60)
 
-# ======================================================================
+# ============================================================
 pygame.quit()
