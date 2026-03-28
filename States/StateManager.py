@@ -8,6 +8,7 @@ class StateManager(state):
     def __init__(self, surface):
         super().__init__("StateManager", surface)
         self.state = MenuState(surface)
+        self.playing = False
 
 
     def update(self, event):
@@ -17,8 +18,13 @@ class StateManager(state):
             if (next == "LevelChooseState"):
                 self.state.clean_up()
                 self.state = LevelChooseState(self.surface)
-            elif (next == "LevelState"):
+            elif (next == "Level 1"):
                 self.state.clean_up()
-                self.state = LevelState(self.surface)
+                self.state = LevelState(self.surface, "Level 1")
+                self.playing = True
+
+        if (self.playing):
+            self.state.player_input()
+            
         self.state.update()
         pygame_widgets.update(event)

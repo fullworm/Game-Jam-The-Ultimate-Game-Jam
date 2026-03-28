@@ -29,29 +29,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        # Key Press
-
-    # Key Hold
-    # keys = pygame.key.get_pressed()
-    # if keys[pygame.K_w]:
-    #     player.move(0, -PLAYERSPEED, room.walls)
-    # if keys[pygame.K_s]:
-    #     player.move(0, PLAYERSPEED, room.walls)
-    # if keys[pygame.K_d]:
-    #     player.move(PLAYERSPEED, 0, room.walls)
-    # if keys[pygame.K_a]:
-    #     player.move(-PLAYERSPEED, 0, room.walls)
-
-    # # -------------------- Game Logic --------------------
-    # newRoom = player.change_room(room, levels.lvl1)
-    # if newRoom is not None:
-    #     room = newRoom
-
-    # # -------------------- Draw --------------------
-    # surface.fill((0, 0, 128))
-
-    # room.draw(surface)
-    # player.draw(surface)
 
     screen.blit(surface, ( (SCREENX / 2) - (GAMEX / 2), (SCREENY / 2) - (GAMEY / 2) ))
     state_manager.update(events)
