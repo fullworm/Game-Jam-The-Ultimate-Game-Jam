@@ -9,7 +9,7 @@ class LevelState(state):
     def __init__(self, surface, level):
         super().__init__("LevelState", surface)
 
-        self.player = entities.Player(TILESIZE * 2, TILESIZE * 2)
+        self.player = entities.Player(int(TILESIZE * 5.5), int(TILESIZE * 5.5))
         self.room = None
         self.paused = False
 
@@ -27,6 +27,7 @@ class LevelState(state):
         self.pauseMenu._hidden = True
         if level == "Level 1":
             self.room = lvl1Start
+            self.player.x, self.player.y = self.room.spawn
         # elif (level == "Level 2"):
         #     self.room = lvl2
         # elif (level == "Level 3"):
@@ -40,13 +41,13 @@ class LevelState(state):
         if (not self.paused):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
-                self.player.move(0, -PLAYERSPEED, self.room.walls, self.room.entities)
+                self.player.move(0, -PLAYERSPEED, self.room)
             if keys[pygame.K_s]:
-                self.player.move(0, PLAYERSPEED, self.room.walls, self.room.entities)
+                self.player.move(0, PLAYERSPEED, self.room)
             if keys[pygame.K_d]:
-                self.player.move(PLAYERSPEED, 0, self.room.walls, self.room.entities)
+                self.player.move(PLAYERSPEED, 0, self.room)
             if keys[pygame.K_a]:
-                self.player.move(-PLAYERSPEED, 0, self.room.walls, self.room.entities)
+                self.player.move(-PLAYERSPEED, 0, self.room)
 
     def toggle_pause(self):
         self.paused = not self.paused

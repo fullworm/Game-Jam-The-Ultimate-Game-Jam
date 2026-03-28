@@ -21,26 +21,26 @@ class Entity:
 
     def collides_with_enemy(self, enemies):
         for enemy in enemies:
-            xcoll = (enemy.x < self.x < enemy.x + enemy.size) or (enemy.x < self.x + PLAYERSIZE < enemy.x + enemy.size)
-            ycoll = (enemy.y < self.y < enemy.y + enemy.size) or (enemy.y < self.y + PLAYERSIZE < enemy.y + enemy.size)
+            xcoll = (enemy.x < self.x < enemy.x + enemy.xsize) or (enemy.x < self.x + PLAYERSIZE < enemy.x + enemy.xsize)
+            ycoll = (enemy.y < self.y < enemy.y + enemy.ysize) or (enemy.y < self.y + PLAYERSIZE < enemy.y + enemy.ysize)
             if xcoll and ycoll:
                 return True
 
-    def move(self, x, y, walls, enemies):
+    def move(self, x, y, room):
         self.x += x
         self.y += y
 
-        if enemies is not None:
-            if self.collides_with_enemy(enemies):
-                print("Hit an enemy")
+        if room.entities is not None:
+            if self.collides_with_enemy(room.entities):
+                self.x, self.y = room.spawn
 
-        if self.collides_with_wall(walls):
+        if self.collides_with_wall(room.walls):
             self.x -= x
             self.y -= y
 
 
     def change_room(self, room, levels):
-        if self.y <= 0:
+        if self.y <= 0 + PLAYERSPEED:
             self.y = GAMEY - (PLAYERSPEED + PLAYERSIZE)
             return levels[room.adjacent_rooms["Up"]]
 
@@ -48,7 +48,7 @@ class Entity:
             self.y = 0 + PLAYERSPEED
             return levels[room.adjacent_rooms["Down"]]
 
-        if self.x <= 0:
+        if self.x <= 0 + PLAYERSPEED:
             self.x = GAMEX - (PLAYERSPEED + PLAYERSIZE)
             return levels[room.adjacent_rooms["Left"]]
 
@@ -65,10 +65,15 @@ class Player(Entity):
         pygame.draw.rect(surface, (255, 0, 0), (self.x, self.y, PLAYERSIZE, PLAYERSIZE))
 
 class Enemy(Entity):
-    def __init__(self, x, y, size):
+    def __init__(self, x, y, xsize, ysize):
         super().__init__(x, y)
-        self.size = size
+        self.xsize = xsize
+        self.ysize = ysize
 
     def draw(self, surface):
         # Todo: temporary
-        pygame.draw.rect(surface, (0, 255, 0), (self.x, self.y, self.size, self.size))
+        pygame.draw.rect(surface, (0, 255, 0), (self.x, self.y, self.xsize, self.ysize))
+
+    def move(self, x, y, room):
+        self.x += x
+        self.y += y
