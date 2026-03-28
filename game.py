@@ -1,11 +1,14 @@
 import pygame, entities, levels
 from constants import *
+from States.StateManager import StateManager
 
 # -------------------- Setup --------------------
 pygame.init()
 
 screen = pygame.display.set_mode(SCREENSIZE)
 surface = pygame.Surface(GAMESIZE)
+
+state_manager = StateManager(surface)
 
 pygame.display.set_caption("Super Awesome Omega game")
 
@@ -20,34 +23,40 @@ room = levels.lvl1Start
 while running:
 
     # -------------------- Events --------------------
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         # Quit
         if event.type == pygame.QUIT:
             running = False
 
         # Key Press
+    surface.fill((0,0,0))
+
+    state_manager.update(events)
+
+
 
     # Key Hold
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player.move(0, -PLAYERSPEED, room.walls)
-    if keys[pygame.K_s]:
-        player.move(0, PLAYERSPEED, room.walls)
-    if keys[pygame.K_d]:
-        player.move(PLAYERSPEED, 0, room.walls)
-    if keys[pygame.K_a]:
-        player.move(-PLAYERSPEED, 0, room.walls)
+    # keys = pygame.key.get_pressed()
+    # if keys[pygame.K_w]:
+    #     player.move(0, -PLAYERSPEED, room.walls)
+    # if keys[pygame.K_s]:
+    #     player.move(0, PLAYERSPEED, room.walls)
+    # if keys[pygame.K_d]:
+    #     player.move(PLAYERSPEED, 0, room.walls)
+    # if keys[pygame.K_a]:
+    #     player.move(-PLAYERSPEED, 0, room.walls)
 
-    # -------------------- Game Logic --------------------
-    newRoom = player.change_room(room, levels.lvl1)
-    if newRoom is not None:
-        room = newRoom
+    # # -------------------- Game Logic --------------------
+    # newRoom = player.change_room(room, levels.lvl1)
+    # if newRoom is not None:
+    #     room = newRoom
 
-    # -------------------- Draw --------------------
-    surface.fill((0, 0, 128))
+    # # -------------------- Draw --------------------
+    # surface.fill((0, 0, 128))
 
-    room.draw(surface)
-    player.draw(surface)
+    # room.draw(surface)
+    # player.draw(surface)
 
     # ----------------------------------------
     screen.blit(surface, ( (SCREENX / 2) - (GAMEX / 2), (SCREENY / 2) - (GAMEY / 2) ))
