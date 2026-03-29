@@ -4,12 +4,13 @@ from constants import *
 wall_spritesheet = pygame.image.load("Images/wall.png")
 
 class Room:
-    def __init__(self, adjacent_rooms, walls, enemies, spawn, collectable = None):
+    def __init__(self, adjacent_rooms, walls, enemies, spawn, collectable = None, terminal = None):
         self.adjacent_rooms = adjacent_rooms
         self.walls: list[list] = walls
         self.entities: list = enemies
         self.spawn = spawn
         self.collectable = collectable
+        self.terminal = terminal
 
     def draw(self, surface):
         for y in range(len(self.walls)):
@@ -72,3 +73,11 @@ class Room:
 
                     wall_sprite = pygame.transform.scale(wall_sprite, (TILESIZE, TILESIZE))
                     surface.blit(wall_sprite, (x * TILESIZE, y * TILESIZE))
+    
+    def reset(self):
+            if self.collectable is not None:
+                self.collectable.active = True
+                self.collectable.timer = 0
+
+            if self.terminal is not None:
+                self.terminal.done = False

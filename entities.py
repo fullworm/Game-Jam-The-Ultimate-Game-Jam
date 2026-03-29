@@ -116,12 +116,14 @@ class Enemy(Entity):
         self.y += y
 
 class Message(Entity):
-    def __init__(self, x, y, xsize, ysize):
+    def __init__(self, x, y, xsize, ysize, text):
         super().__init__(x,y)
         self.xsize = xsize
         self.ysize = ysize
         self.active = True
         self.rect = pygame.Rect(self.x, self.y, self.xsize, self.ysize)
+        self.text = text
+        self.timer = 0
 
     def draw(self, surface, player):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
@@ -129,6 +131,60 @@ class Message(Entity):
         if self.active and self.rect.colliderect(player_rect):
             self.active = False
             player.MessageNumber += 1
+            self.timer = 120
+
             
         if self.active:
             pygame.draw.rect(surface, (255, 255, 255), self.rect)
+        
+        if self.timer > 0:
+            self.render_text(surface)
+            self.timer -= 1
+    
+    def render_text(self, surface):
+        font = pygame.font.Font(None, 36)
+    
+        text_surface = font.render(self.text, True, (255, 255, 255))
+        
+        bg_rect = text_surface.get_rect(center=(GAMEX // 2, GAMEY - 50))
+        pygame.draw.rect(surface, (0, 0, 0), bg_rect.inflate(20, 10))
+    
+        surface.blit(text_surface, bg_rect)
+
+class Terminal(Entity):
+    def __init__(self, x, y, xsize, ysize):
+        super().__init__(x, y)
+        self.xsize = xsize
+        self.ysize = ysize
+        self.rect = pygame.Rect(self.x, self.y, self.xsize, self.ysize)
+        self.timer = 0
+        self.done = False
+
+    def draw(self, surface, player, next_state_func):
+        player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
+
+        pygame.draw.rect(surface, (255,0,0), self.rect)
+        if self.done and self.timer > 0:
+            self.render_text(surface, "Relationship progressed!")
+            self.timer -= 1
+        elif self.done and self.timer == 0:
+            next_state_func("LevelChooseState")
+        else:
+            if self.rect.colliderect(player_rect):
+                if player.MessageNumber < 3:
+                    self.render_text(surface, f"{3-player.MessageNumber} Messages left to collect")
+                elif player.MessageNumber == 3:
+                    self.done = True
+                    self.timer = 120
+                    self.render_text(surface, "Relationship progressed!")
+
+
+    def render_text(self, surface, text):
+        font = pygame.font.Font(None, 36)
+    
+        text_surface = font.render(text, True, (255, 255, 255))
+        
+        bg_rect = text_surface.get_rect(center=(GAMEX // 2, GAMEY - 50))
+        pygame.draw.rect(surface, (0, 0, 0), bg_rect.inflate(20, 10))
+    
+        surface.blit(text_surface, bg_rect)

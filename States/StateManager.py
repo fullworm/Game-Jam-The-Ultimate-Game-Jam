@@ -18,6 +18,7 @@ class StateManager(state):
             next = self.state.get_next()
             if (next == "LevelChooseState"):
                 self.state.clean_up()
+                self.playSurface.fill((210, 210, 180))
                 self.state = LevelChooseState(self.surface)
                 self.playing = False
             elif (next == "Level 1"):

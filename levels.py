@@ -27,7 +27,8 @@ lvl1Start = Room.Room(
 
     None,
 
-    (int(5.5 * TILESIZE), int(5.5 * TILESIZE))
+    (int(5.5 * TILESIZE), int(5.5 * TILESIZE)),
+    terminal=entities.Terminal(6 * TILESIZE, TILESIZE, PLAYERSIZE, PLAYERSIZE)
 )
 lvl1Left = Room.Room(
     {"Up": None,
@@ -53,7 +54,7 @@ lvl1Left = Room.Room(
      entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),],
 
     (int(9.5 * TILESIZE), int(5.5 * TILESIZE)),
-    collectable=entities.Message(2 * TILESIZE, 6 * TILESIZE, 20, 20)
+    collectable=entities.Message(2 * TILESIZE, 6 * TILESIZE, 20, 20, "so prety")
 )
 lvl1Right = Room.Room(
     {"Up": None,
@@ -78,7 +79,7 @@ lvl1Right = Room.Room(
      entities.Enemy(7 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1),],
 
     (int(2.5 * TILESIZE), int(5.5 * TILESIZE)), 
-    collectable=entities.Message(10 * TILESIZE, 6 * TILESIZE, 20, 20)
+    collectable=entities.Message(10 * TILESIZE, 6 * TILESIZE, 20, 20, "ultimate rizz")
 
 )
 lvl1Down = Room.Room(
@@ -105,7 +106,7 @@ lvl1Down = Room.Room(
      entities.Enemy(2 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False),],
 
     (int(5.5 * TILESIZE), int(2.5 * TILESIZE)),
-    collectable=entities.Message(6 * TILESIZE, 10 * TILESIZE, 20, 20)
+    collectable=entities.Message(6 * TILESIZE, 10 * TILESIZE, 20, 20, "-30 aura")
 
 )
 lvl1Exit = Room.Room(
