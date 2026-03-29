@@ -74,13 +74,17 @@ class Room:
                     wall_sprite = pygame.transform.scale(wall_sprite, (TILESIZE, TILESIZE))
                     surface.blit(wall_sprite, (x * TILESIZE, y * TILESIZE))
     
-    def reset(self):
+    def reset(self, player = None):
             if self.collectable is not None:
                 self.collectable.active = True
                 self.collectable.timer = 0
 
             if self.terminal is not None:
                 self.terminal.done = False
+
+            self.reset_enemy()
+            if player is not None:
+                player.x, player.y = self.spawn
     def reset_enemy(self):
         for enemy in self.entities:
             enemy.reset()

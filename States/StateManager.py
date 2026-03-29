@@ -25,6 +25,15 @@ class StateManager(state):
                 self.state.clean_up()
                 self.state = LevelState(self.playSurface, "Level 1", self.surface)
                 self.playing = True
+            elif (next == "Level 2"):
+                self.state.clean_up()
+                self.state = LevelState(self.playSurface, "Level 2", self.surface)
+                self.playing = True
+            elif (next == "Level 3"):
+                self.state.clean_up()
+                self.state = LevelState(self.playSurface, "Level 3", self.surface)
+                self.playing = True
+            
 
         if hasattr(self.state, 'player_input'):
             self.state.player_input()

@@ -30,10 +30,15 @@ class LevelState(state):
         if self.level == "Level 1":
             self.room = lvl1Start
             self.player.x, self.player.y = self.room.spawn
-        # elif (self.level == "Level 2"):
-        #     self.room = lvl2
-        # elif (self.level == "Level 3"):
-        #     self.room = lvl3
+            self.curlevel = lvl1
+        elif (self.level == "Level 2"):
+            self.room = lvl2Start
+            self.player.x, self.player.y = self.room.spawn
+            self.curlevel = lvl2
+        elif (self.level == "Level 3"):
+            self.room = lvl3Start
+            self.player.x, self.player.y = self.room.spawn
+            self.curlevel = lvl3
         # elif (self.level == "Level 4"):
         #     self.room = lvl4
         # elif (self.level == "Level 5"):
@@ -64,7 +69,7 @@ class LevelState(state):
             
 
     def update(self, events):
-        newRoom = self.player.change_room(self.room, lvl1)
+        newRoom = self.player.change_room(self.room, self.curlevel)
         if newRoom is not None:
             if self.room.entities is not None:
                 for enemy in self.room.entities:
@@ -130,10 +135,10 @@ class LevelState(state):
         self.paused = False
         if self.level == "Level 1":
             level = lvl1
-        # elif (self.level == "Level 2"):
-        #     level = lvl2
-        # elif (self.level == "Level 3"):
-        #     level = lvl3
+        elif (self.level == "Level 2"):
+            level = lvl2
+        elif (self.level == "Level 3"):
+            level = lvl3
         # elif (self.level == "Level 4"):
         #     level = lvl4
         # elif (self.level == "Level 5"):

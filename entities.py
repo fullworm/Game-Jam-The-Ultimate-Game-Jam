@@ -123,6 +123,7 @@ class Projectile(Entity):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
         if self.rect.colliderect(player_rect):
             self.delete = True
+            room.reset(player)
 
 class Enemy(Entity):
     def __init__(self, x, y, xsize, ysize, moving_right, moving_down, speed = 0, shoots = False, moves = False):

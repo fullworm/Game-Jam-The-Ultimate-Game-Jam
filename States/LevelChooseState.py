@@ -17,7 +17,7 @@ class LevelChooseState(state):
             texts=('Level 1 ', "Level 2 ", "Level 3 ", "Level 4 ", "Level 5 "),
             onClicks=(
                 lambda: self.set_next_state("Level 1"), 
-                lambda :self.set_next_state("Level 2"), 
+                lambda: self.set_next_state("Level 2"), 
                 lambda: self.set_next_state("Level 3"), 
                 lambda: self.set_next_state("Level 4"), 
                 lambda: self.set_next_state("Level 5")
