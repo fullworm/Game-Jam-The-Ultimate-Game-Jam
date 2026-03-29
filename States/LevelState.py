@@ -99,6 +99,8 @@ class LevelState(state):
                     enemy.moving_down += 1
                 if enemy.y > GAMEY:
                     enemy.moving_down -= 2
+        if self.room.collectable is not None:
+            self.room.collectable.draw(self.surface, self.player)
 
 
     def clean_up(self):

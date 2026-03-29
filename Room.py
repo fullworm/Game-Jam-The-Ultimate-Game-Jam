@@ -5,11 +5,12 @@ wall_sprite = pygame.image.load("Images/wall.png")
 wall_sprite = pygame.transform.scale(wall_sprite, (TILESIZE, TILESIZE))
 
 class Room:
-    def __init__(self, adjacent_rooms, walls, enemies, spawn):
+    def __init__(self, adjacent_rooms, walls, enemies, spawn, collectable = None):
         self.adjacent_rooms = adjacent_rooms
         self.walls: list[list] = walls
         self.entities: list = enemies
         self.spawn = spawn
+        self.collectable = collectable
 
     def draw(self, surface):
         # Todo: temp

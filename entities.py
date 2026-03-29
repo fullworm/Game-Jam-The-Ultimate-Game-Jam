@@ -62,6 +62,7 @@ class Entity:
 class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
+        self.MessageNumber = 0
 
     def draw(self, surface, room):
         if room.entities is not None:
@@ -88,3 +89,21 @@ class Enemy(Entity):
     def move(self, x, y, room):
         self.x += x
         self.y += y
+
+class Message(Entity):
+    def __init__(self, x, y, xsize, ysize):
+        super().__init__(x,y)
+        self.xsize = xsize
+        self.ysize = ysize
+        self.active = True
+        self.rect = pygame.Rect(self.x, self.y, self.xsize, self.ysize)
+
+    def draw(self, surface, player):
+        player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
+         
+        if self.active and self.rect.colliderect(player_rect):
+            self.active = False
+            player.MessageNumber += 1
+            
+        if self.active:
+            pygame.draw.rect(surface, (255, 255, 255), self.rect)

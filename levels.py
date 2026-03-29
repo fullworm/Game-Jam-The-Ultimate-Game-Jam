@@ -52,7 +52,8 @@ lvl1Left = Room.Room(
      entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),
      entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),],
 
-    (int(9.5 * TILESIZE), int(5.5 * TILESIZE))
+    (int(9.5 * TILESIZE), int(5.5 * TILESIZE)),
+    collectable=entities.Message(2 * TILESIZE, 6 * TILESIZE, 20, 20)
 )
 lvl1Right = Room.Room(
     {"Up": None,
@@ -76,7 +77,8 @@ lvl1Right = Room.Room(
     [entities.Enemy(4 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1),
      entities.Enemy(7 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1),],
 
-    (int(2.5 * TILESIZE), int(5.5 * TILESIZE))
+    (int(2.5 * TILESIZE), int(5.5 * TILESIZE)), 
+    collectable=entities.Message(10 * TILESIZE, 6 * TILESIZE, 20, 20)
 
 )
 lvl1Down = Room.Room(
@@ -102,7 +104,8 @@ lvl1Down = Room.Room(
      entities.Enemy(9 * TILESIZE, 6 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),
      entities.Enemy(2 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False),],
 
-    (int(5.5 * TILESIZE), int(2.5 * TILESIZE))
+    (int(5.5 * TILESIZE), int(2.5 * TILESIZE)),
+    collectable=entities.Message(6 * TILESIZE, 10 * TILESIZE, 20, 20)
 
 )
 lvl1Exit = Room.Room(
