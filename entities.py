@@ -1,6 +1,6 @@
 import pygame
 from constants import *
-
+import math
 player_spritesheet = pygame.image.load("Images/playerSprites.png")
 basic_enemy_spritesheet = pygame.image.load("Images/basicEnemySprites.png")
 
@@ -100,6 +100,9 @@ class Enemy(Entity):
         self.ysize = ysize
         self.moving_right = moving_right
         self.moving_down = moving_down
+        self.speed = 2
+        self.startx = x
+        self.starty = y
 
     def draw(self, surface):
         ticks = pygame.time.get_ticks() % (FPS * 20)
@@ -114,6 +117,25 @@ class Enemy(Entity):
     def move(self, x, y, room):
         self.x += x
         self.y += y
+    
+    def move_to_player(self, player):
+        enemy_vec = pygame.math.Vector2(self.x, self.y)
+        player_vec = pygame.math.Vector2(player.x, player.y)
+        
+        to_player = player_vec - enemy_vec
+        
+        angle_to_player = math.degrees(-math.atan2(to_player.x, to_player.y))
+        self.enemyOrientation = angle_to_player
+
+        
+        if to_player.length() > 0:
+            move_vector = to_player.normalize() * self.speed
+            self.x += move_vector.x
+            self.y += move_vector.y
+    def reset(self):
+        self.x = self.startx
+        self.y = self.starty
+            
 
 class Message(Entity):
     def __init__(self, x, y, xsize, ysize, text):

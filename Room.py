@@ -81,3 +81,6 @@ class Room:
 
             if self.terminal is not None:
                 self.terminal.done = False
+    def reset_enemy(self):
+        for enemy in self.entities:
+            enemy.reset()

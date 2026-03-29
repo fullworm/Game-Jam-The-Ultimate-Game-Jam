@@ -66,6 +66,9 @@ class LevelState(state):
     def update(self, events):
         newRoom = self.player.change_room(self.room, lvl1)
         if newRoom is not None:
+            if self.room.entities is not None:
+                for enemy in self.room.entities:
+                    enemy.reset()
             self.room = newRoom
         
         self.surface.fill((0, 0, 128))
@@ -100,6 +103,11 @@ class LevelState(state):
                     enemy.moving_down += 1
                 if enemy.y > GAMEY:
                     enemy.moving_down -= 2
+        
+        if self.room == lvl1Left:
+            for enemy in self.room.entities:
+                enemy.move_to_player(self.player)
+
         if self.room.collectable is not None:
             self.room.collectable.draw(self.surface, self.player)
         if self.room.terminal is not None:
