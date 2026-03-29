@@ -1,6 +1,9 @@
 import pygame
 from constants import *
 
+wall_sprite = pygame.image.load("Images/wall.png")
+wall_sprite = pygame.transform.scale(wall_sprite, (TILESIZE, TILESIZE))
+
 class Room:
     def __init__(self, adjacent_rooms, walls, enemies, spawn):
         self.adjacent_rooms = adjacent_rooms
@@ -13,4 +16,4 @@ class Room:
         for y in range(len(self.walls)):
             for x in range(len(self.walls)):
                 if self.walls[y][x] == 1:
-                    pygame.draw.rect(surface, (128, 128, 128), (x * TILESIZE, y * TILESIZE, TILESIZE, TILESIZE))
+                    surface.blit(wall_sprite, (x * TILESIZE, y * TILESIZE))

@@ -1,6 +1,9 @@
 import pygame
 from constants import *
 
+player_spritesheet = pygame.image.load("Images/playerSprites.png")
+basic_enemy_spritesheet = pygame.image.load("Images/basicEnemySprites.png")
+
 class Entity:
     def __init__(self, x, y):
         self.x = x
@@ -61,8 +64,9 @@ class Player(Entity):
         super().__init__(x, y)
 
     def draw(self, surface):
-        # Todo: temporary
-        pygame.draw.rect(surface, (255, 0, 0), (self.x, self.y, PLAYERSIZE, PLAYERSIZE))
+        player_sprite = player_spritesheet.subsurface((0, 0, 12, 12))
+        player_sprite = pygame.transform.scale(player_sprite, (PLAYERSIZE, PLAYERSIZE))
+        surface.blit(player_sprite, (self.x, self.y))
 
 class Enemy(Entity):
     def __init__(self, x, y, xsize, ysize):
@@ -71,8 +75,9 @@ class Enemy(Entity):
         self.ysize = ysize
 
     def draw(self, surface):
-        # Todo: temporary
-        pygame.draw.rect(surface, (0, 255, 0), (self.x, self.y, self.xsize, self.ysize))
+        basic_enemy_sprite = basic_enemy_spritesheet.subsurface((0, 0, 16, 16))
+        basic_enemy_sprite = pygame.transform.scale(basic_enemy_sprite, (PLAYERSIZE, PLAYERSIZE))
+        surface.blit(basic_enemy_sprite, (self.x, self.y))
 
     def move(self, x, y, room):
         self.x += x
