@@ -48,9 +48,9 @@ lvl1Left = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy(3 * TILESIZE, 3 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE),
-     entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE),
-     entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE),],
+    [entities.Enemy(3 * TILESIZE, 3 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),
+     entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),
+     entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),],
 
     (int(9.5 * TILESIZE), int(5.5 * TILESIZE))
 )
@@ -73,8 +73,8 @@ lvl1Right = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy(4 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE),
-     entities.Enemy(7 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE),],
+    [entities.Enemy(4 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1),
+     entities.Enemy(7 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1),],
 
     (int(2.5 * TILESIZE), int(5.5 * TILESIZE))
 
@@ -98,9 +98,9 @@ lvl1Down = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy(2 * TILESIZE, 4 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE),
-     entities.Enemy(9 * TILESIZE, 6 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE),
-     entities.Enemy(2 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE),],
+    [entities.Enemy(2 * TILESIZE, 4 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False),
+     entities.Enemy(9 * TILESIZE, 6 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),
+     entities.Enemy(2 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False),],
 
     (int(5.5 * TILESIZE), int(2.5 * TILESIZE))
 

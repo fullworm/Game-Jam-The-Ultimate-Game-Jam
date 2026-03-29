@@ -73,7 +73,34 @@ class LevelState(state):
         if self.room.entities is not None:
             for enemy in self.room.entities:
                 enemy.draw(self.surface)
-        self.player.draw(self.surface)
+        self.player.draw(self.surface, self.room)
+
+        # a BUNCH of custom room instructions for enemies
+        if self.room == lvl1Down:
+            for enemy in self.room.entities:
+                if enemy.x <= TILESIZE:
+                    enemy.moving_right = True
+                if enemy.x >= GAMEX - TILESIZE * 2:
+                    enemy.moving_right = False
+
+                if enemy.moving_right:
+                    enemy.move(ENEMYSPEED, 0, self.room)
+                else:
+                    enemy.move(-ENEMYSPEED, 0, self.room)
+
+        if self.room == lvl1Right:
+            for enemy in self.room.entities:
+                if enemy.moving_down == 120:
+                    enemy.move(0, GAMEY*2, self.room)
+                if enemy.moving_down == 0:
+                    enemy.move(0, -GAMEY*2, self.room)
+
+                if enemy.y < GAMEY:
+                    enemy.moving_down += 1
+                if enemy.y > GAMEY:
+                    enemy.moving_down -= 2
+
+
     def clean_up(self):
         self.pauseMenu.hide()
         self.pauseMenu.disable

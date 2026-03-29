@@ -33,9 +33,9 @@ class Entity:
         self.x += x
         self.y += y
 
-        if room.entities is not None:
-            if self.collides_with_enemy(room.entities):
-                self.x, self.y = room.spawn
+        # if room.entities is not None:
+        #     if self.collides_with_enemy(room.entities):
+        #         self.x, self.y = room.spawn
 
         if self.collides_with_wall(room.walls):
             self.x -= x
@@ -63,16 +63,22 @@ class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
 
-    def draw(self, surface):
+    def draw(self, surface, room):
+        if room.entities is not None:
+            if self.collides_with_enemy(room.entities):
+                self.x, self.y = room.spawn
+
         player_sprite = player_spritesheet.subsurface((0, 0, 12, 12))
         player_sprite = pygame.transform.scale(player_sprite, (PLAYERSIZE, PLAYERSIZE))
         surface.blit(player_sprite, (self.x, self.y))
 
 class Enemy(Entity):
-    def __init__(self, x, y, xsize, ysize):
+    def __init__(self, x, y, xsize, ysize, moving_right, moving_down):
         super().__init__(x, y)
         self.xsize = xsize
         self.ysize = ysize
+        self.moving_right = moving_right
+        self.moving_down = moving_down
 
     def draw(self, surface):
         basic_enemy_sprite = basic_enemy_spritesheet.subsurface((0, 0, 16, 16))
