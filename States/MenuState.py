@@ -8,14 +8,17 @@ class MenuState(state):
         self.ButtonArray = ButtonArray(
                 # Mandatory Parameters
             self.surface,  # Surface to place button array on
-            (SCREENX - 500) // 2,  # X-coordinate
-            (SCREENY - 500) // 2,  # Y-coordinate
-            500,  # Width
-            300,  # Height
+            (SCREENX - 700) // 2,  # X-coordinate
+            (SCREENY+200) // 2,  # Y-coordinate
+            700,  # Width
+            200,  # Height
             (3, 1),
-            border=50,  # Distance between buttons and edge of array
+            border=30,  # Distance between buttons and edge of array
             texts=('play', 'Creds', 'Exit'),  # Sets the texts of each button (counts left to right then top to bottom)
-            onClicks=(lambda: self.set_next_state("LevelChooseState"), lambda: print('creds'), lambda: exit())
+            onClicks=(lambda: self.set_next_state("LevelChooseState"), lambda: print('creds'), lambda: exit()),
+            colour=(0, 0, 0),
+            hoverColours=((0, 255, 255), (0, 255, 255), (0, 255, 255)),
+            inactiveColours=((50, 150, 150),(50, 150, 150),(50, 150, 150))
         )
         
     def update(self, events = None):

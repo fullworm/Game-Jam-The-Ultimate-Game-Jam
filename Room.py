@@ -86,5 +86,6 @@ class Room:
             if player is not None:
                 player.x, player.y = self.spawn
     def reset_enemy(self):
-        for enemy in self.entities:
-            enemy.reset()
+        if self.entities is not None:
+            for enemy in self.entities:
+                enemy.reset()

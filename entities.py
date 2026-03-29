@@ -3,6 +3,7 @@ from constants import *
 import math
 player_spritesheet = pygame.image.load("Images/playerSprites.png")
 basic_enemy_spritesheet = pygame.image.load("Images/basicEnemySprites.png")
+text_sheet = pygame.image.load("Images/text.png")
 
 class Entity:
     def __init__(self, x, y):
@@ -80,15 +81,15 @@ class Player(Entity):
                 self.x, self.y = room.spawn
 
         if self.dir == "left":
-            player_sprite = player_spritesheet.subsurface((0, 0, 6, 6))
+            player_sprite = player_spritesheet.subsurface((0, 0, 12, 12))
         elif self.dir == "up":
-            player_sprite = player_spritesheet.subsurface((6, 0, 6, 6))
+            player_sprite = player_spritesheet.subsurface((12, 0, 12, 12))
         elif self.dir == "right":
-            player_sprite = player_spritesheet.subsurface((12, 0, 6, 6))
+            player_sprite = player_spritesheet.subsurface((24, 0, 12, 12))
         elif self.dir == "down":
-            player_sprite = player_spritesheet.subsurface((18, 0, 6, 6))
+            player_sprite = player_spritesheet.subsurface((36, 0, 12, 12))
         else:
-            player_sprite = player_spritesheet.subsurface((0, 0, 6, 6))
+            player_sprite = player_spritesheet.subsurface((0, 0, 12, 12))
 
         player_sprite = pygame.transform.scale(player_sprite, (PLAYERSIZE, PLAYERSIZE))
         surface.blit(player_sprite, (self.x, self.y))
@@ -191,7 +192,7 @@ class Enemy(Entity):
             
 
 class Message(Entity):
-    def __init__(self, x, y, xsize, ysize, text):
+    def __init__(self, x, y, xsize, ysize, text, boy):
         super().__init__(x,y)
         self.xsize = xsize
         self.ysize = ysize
@@ -199,6 +200,7 @@ class Message(Entity):
         self.rect = pygame.Rect(self.x, self.y, self.xsize, self.ysize)
         self.text = text
         self.timer = 0
+        self.boy = boy
 
     def draw(self, surface, player):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
@@ -210,8 +212,13 @@ class Message(Entity):
 
             
         if self.active:
-            pygame.draw.rect(surface, (255, 255, 255), self.rect)
-        
+            if self.boy:
+                text_sprite = text_sheet.subsurface((0, 0, 12, 12))
+            else:
+                text_sprite = text_sheet.subsurface((12, 0, 12, 12))
+            text_sprite = pygame.transform.scale(text_sprite, (PLAYERSIZE, PLAYERSIZE))
+            surface.blit(text_sprite, (self.x, self.y))
+
         if self.timer > 0:
             self.render_text(surface)
             self.timer -= 1

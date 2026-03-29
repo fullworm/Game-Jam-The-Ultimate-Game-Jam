@@ -2,8 +2,9 @@ from States.State import state
 from constants import *
 from States.MenuState import MenuState
 from States.LevelChooseState import LevelChooseState
-import pygame_widgets
+import pygame_widgets, pygame
 from States.LevelState import LevelState
+
 class StateManager(state):
     def __init__(self, screen, surface):
         super().__init__("StateManager", screen)
@@ -18,7 +19,7 @@ class StateManager(state):
             next = self.state.get_next()
             if (next == "LevelChooseState"):
                 self.state.clean_up()
-                self.playSurface.fill((210, 210, 180))
+                # self.playSurface.fill((210, 210, 180))
                 self.state = LevelChooseState(self.surface)
                 self.playing = False
             elif (next == "Level 1"):

@@ -5,6 +5,9 @@ from levels import *
 from pygame_widgets.button import ButtonArray
 from sys import exit
 
+lvlBG = pygame.image.load("Images/lvlsBG.png")
+lvl_BG = pygame.transform.scale(lvlBG, (GAMEX, GAMEY))
+
 class LevelState(state):
     def __init__(self, surface, level, screen):
         super().__init__("LevelState", surface)
@@ -75,9 +78,8 @@ class LevelState(state):
                 for enemy in self.room.entities:
                     enemy.reset()
             self.room = newRoom
-        
-        self.surface.fill((0, 0, 128))
 
+        self.surface.blit(lvl_BG, (0, 0))
         self.room.draw(self.surface)
 
         if self.room.entities is not None:
@@ -90,8 +92,16 @@ class LevelState(state):
                     enemy.projectiles = [p for p in enemy.projectiles if not p.delete]
                 if enemy.move_to_p:
                     enemy.move_to_player(self.player)
+                    if enemy.x >= 8.5 * TILESIZE:
+                            enemy.move(-(ENEMYSPEED/2), 0, self.room)
 
-                
+
+
+
+        if self.room.collectable is not None:
+            self.room.collectable.draw(self.surface, self.player)
+        if self.room.terminal is not None:
+            self.room.terminal.draw(self.surface, self.player, self.set_next_state)
 
         self.player.draw(self.surface, self.room)
 
@@ -119,12 +129,14 @@ class LevelState(state):
                     enemy.moving_down += 1
                 if enemy.y > GAMEY:
                     enemy.moving_down -= 2
-        
 
-        if self.room.collectable is not None:
-            self.room.collectable.draw(self.surface, self.player)
-        if self.room.terminal is not None:
-            self.room.terminal.draw(self.surface, self.player, self.set_next_state)
+
+
+        # if self.room == lvl1Left:
+        #     for enemy in self.room.entities:
+        #         enemy.move_to_player(self.player)
+        #         if enemy.x >= 8.5 * TILESIZE:
+        #             enemy.move(-ENEMYSPEED, 0, self.room)
 
 
     def clean_up(self):
