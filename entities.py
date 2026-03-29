@@ -93,16 +93,51 @@ class Player(Entity):
         player_sprite = pygame.transform.scale(player_sprite, (PLAYERSIZE, PLAYERSIZE))
         surface.blit(player_sprite, (self.x, self.y))
 
+class Projectile(Entity):
+    def __init__(self, x, y, dir):
+        super().__init__(x, y)
+        self.direction = dir
+        self.speed = 2
+        self.float_x = float(self.x)
+        self.float_y = float(self.y)
+        self.rect = pygame.Rect(self.x, self.y, PROJECTILESIZE, PROJECTILESIZE)
+        self.delete = False
+
+    def draw(self, surface):
+        pygame.draw.ellipse(surface, (255,0,0), self.rect, 0)
+
+    def update(self, player, room, surface):
+    
+        self.float_x += self.direction.x * self.speed
+        self.float_y += self.direction.y * self.speed
+        
+        self.x = int(self.float_x)
+        self.y = int(self.float_y)
+        self.rect.topleft = (self.x, self.y)
+
+        self.draw(surface)
+        
+        if self.collides_with_wall(room.walls):
+            self.delete = True
+
+        player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
+        if self.rect.colliderect(player_rect):
+            self.delete = True
+
 class Enemy(Entity):
-    def __init__(self, x, y, xsize, ysize, moving_right, moving_down):
+    def __init__(self, x, y, xsize, ysize, moving_right, moving_down, speed = 0, shoots = False, moves = False):
         super().__init__(x, y)
         self.xsize = xsize
         self.ysize = ysize
         self.moving_right = moving_right
         self.moving_down = moving_down
-        self.speed = 2
+        self.speed = speed
         self.startx = x
         self.starty = y
+        self.shoots = shoots
+        self.timer = 0
+        self.projectiles = []
+        self.move_to_p = moves
 
     def draw(self, surface):
         ticks = pygame.time.get_ticks() % (FPS * 20)
@@ -119,9 +154,10 @@ class Enemy(Entity):
         self.y += y
     
     def move_to_player(self, player):
+
         enemy_vec = pygame.math.Vector2(self.x, self.y)
         player_vec = pygame.math.Vector2(player.x, player.y)
-        
+
         to_player = player_vec - enemy_vec
         
         angle_to_player = math.degrees(-math.atan2(to_player.x, to_player.y))
@@ -132,6 +168,22 @@ class Enemy(Entity):
             move_vector = to_player.normalize() * self.speed
             self.x += move_vector.x
             self.y += move_vector.y
+    
+    def shoot(self, player):
+        if self.timer > 0:
+            self.timer -= 1
+        else:
+            enemy_vec = pygame.math.Vector2(self.x, self.y)
+            player_vec = pygame.math.Vector2(player.x, player.y)
+            to_player = player_vec - enemy_vec
+            
+            if to_player.length() > 0:
+                to_player = to_player.normalize()
+
+            new_proj = Projectile(self.x, self.y, to_player)
+            self.projectiles.append(new_proj)
+            self.timer = 120
+
     def reset(self):
         self.x = self.startx
         self.y = self.starty
@@ -210,3 +262,4 @@ class Terminal(Entity):
         pygame.draw.rect(surface, (0, 0, 0), bg_rect.inflate(20, 10))
     
         surface.blit(text_surface, bg_rect)
+

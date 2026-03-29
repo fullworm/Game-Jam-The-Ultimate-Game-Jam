@@ -74,9 +74,20 @@ class LevelState(state):
         self.surface.fill((0, 0, 128))
 
         self.room.draw(self.surface)
+
         if self.room.entities is not None:
             for enemy in self.room.entities:
                 enemy.draw(self.surface)
+                if enemy.shoots:
+                    enemy.shoot(self.player)
+                    for p in enemy.projectiles:
+                        p.update(self.player, self.room, self.surface)
+                    enemy.projectiles = [p for p in enemy.projectiles if not p.delete]
+                if enemy.move_to_p:
+                    enemy.move_to_player(self.player)
+
+                
+
         self.player.draw(self.surface, self.room)
 
         # a BUNCH of custom room instructions for enemies
@@ -104,9 +115,6 @@ class LevelState(state):
                 if enemy.y > GAMEY:
                     enemy.moving_down -= 2
         
-        if self.room == lvl1Left:
-            for enemy in self.room.entities:
-                enemy.move_to_player(self.player)
 
         if self.room.collectable is not None:
             self.room.collectable.draw(self.surface, self.player)

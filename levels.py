@@ -49,9 +49,9 @@ lvl1Left = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy(3 * TILESIZE, 3 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),
-     entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),
-     entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),],
+    [entities.Enemy(3 * TILESIZE, 3 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, shoots=True),
+     entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, shoots=True),
+     entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=2),],
 
     (int(9.5 * TILESIZE), int(5.5 * TILESIZE)),
     collectable=entities.Message(2 * TILESIZE, 6 * TILESIZE, 20, 20, "so prety")
