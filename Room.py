@@ -1,8 +1,7 @@
 import pygame
 from constants import *
 
-wall_sprite = pygame.image.load("Images/wall.png")
-wall_sprite = pygame.transform.scale(wall_sprite, (TILESIZE, TILESIZE))
+wall_spritesheet = pygame.image.load("Images/wall.png")
 
 class Room:
     def __init__(self, adjacent_rooms, walls, enemies, spawn, collectable = None):
@@ -13,8 +12,63 @@ class Room:
         self.collectable = collectable
 
     def draw(self, surface):
-        # Todo: temp
         for y in range(len(self.walls)):
             for x in range(len(self.walls)):
                 if self.walls[y][x] == 1:
+                    left, right, up, down = 1, 1, 1, 1
+                    if x == 0:
+                        left = 0
+                    elif self.walls[y][x-1] == 0:
+                        left = 0
+
+                    if x == len(self.walls[0]) - 1:
+                        right = 0
+                    elif self.walls[y][x+1] == 0:
+                        right = 0
+
+                    if y == 0:
+                        up = 0
+                    elif self.walls[y-1][x] == 0:
+                        up = 0
+
+                    if y == len(self.walls) - 1:
+                        down = 0
+                    elif self.walls[y+1][x] == 0:
+                        down = 0
+
+
+                    if (left, right, up, down) == (0, 0, 0, 0):
+                        wall_sprite = wall_spritesheet.subsurface((0, 0, 8, 8))
+                    elif (left, right, up, down) == (0, 0, 0, 1):
+                        wall_sprite = wall_spritesheet.subsurface((8, 0, 8, 8))
+                    elif (left, right, up, down) == (1, 0, 0, 0):
+                        wall_sprite = wall_spritesheet.subsurface((16, 0, 8, 8))
+                    elif (left, right, up, down) == (0, 0, 1, 0):
+                        wall_sprite = wall_spritesheet.subsurface((24, 0, 8, 8))
+                    elif (left, right, up, down) == (0, 1, 0, 0):
+                        wall_sprite = wall_spritesheet.subsurface((32, 0, 8, 8))
+                    elif (left, right, up, down) == (1, 0, 0, 1):
+                        wall_sprite = wall_spritesheet.subsurface((40, 0, 8, 8))
+                    elif (left, right, up, down) == (1, 0, 1, 0):
+                        wall_sprite = wall_spritesheet.subsurface((48, 0, 8, 8))
+                    elif (left, right, up, down) == (0, 1, 1, 0):
+                        wall_sprite = wall_spritesheet.subsurface((56, 0, 8, 8))
+                    elif (left, right, up, down) == (0, 1, 0, 1):
+                        wall_sprite = wall_spritesheet.subsurface((64, 0, 8, 8))
+                    elif (left, right, up, down) == (0, 0, 1, 1):
+                        wall_sprite = wall_spritesheet.subsurface((72, 0, 8, 8))
+                    elif (left, right, up, down) == (1, 1, 0, 0):
+                        wall_sprite = wall_spritesheet.subsurface((80, 0, 8, 8))
+                    elif (left, right, up, down) == (1, 1, 0, 1):
+                        wall_sprite = wall_spritesheet.subsurface((88, 0, 8, 8))
+                    elif (left, right, up, down) == (1, 0, 1, 1):
+                        wall_sprite = wall_spritesheet.subsurface((96, 0, 8, 8))
+                    elif (left, right, up, down) == (1, 1, 1, 0):
+                        wall_sprite = wall_spritesheet.subsurface((104, 0, 8, 8))
+                    elif (left, right, up, down) == (0, 1, 1, 1):
+                        wall_sprite = wall_spritesheet.subsurface((112, 0, 8, 8))
+                    elif (left, right, up, down) == (1, 1, 1, 1):
+                        wall_sprite = wall_spritesheet.subsurface((120, 0, 8, 8))
+
+                    wall_sprite = pygame.transform.scale(wall_sprite, (TILESIZE, TILESIZE))
                     surface.blit(wall_sprite, (x * TILESIZE, y * TILESIZE))

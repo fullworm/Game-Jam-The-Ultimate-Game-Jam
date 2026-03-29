@@ -8,6 +8,7 @@ class Entity:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.dir = "left"
 
     def collides_with_wall(self, walls):
         if (self.y + PLAYERSIZE) // TILESIZE >= len(walls) or (self.x + PLAYERSIZE) // TILESIZE >= len(walls[0]):
@@ -36,6 +37,15 @@ class Entity:
         # if room.entities is not None:
         #     if self.collides_with_enemy(room.entities):
         #         self.x, self.y = room.spawn
+
+        if x < 0:
+            self.dir = "left"
+        elif x > 0:
+            self.dir = "right"
+        elif y < 0:
+            self.dir = "up"
+        elif y > 0:
+            self.dir = "down"
 
         if self.collides_with_wall(room.walls):
             self.x -= x
@@ -69,7 +79,17 @@ class Player(Entity):
             if self.collides_with_enemy(room.entities):
                 self.x, self.y = room.spawn
 
-        player_sprite = player_spritesheet.subsurface((0, 0, 12, 12))
+        if self.dir == "left":
+            player_sprite = player_spritesheet.subsurface((0, 0, 6, 6))
+        elif self.dir == "up":
+            player_sprite = player_spritesheet.subsurface((6, 0, 6, 6))
+        elif self.dir == "right":
+            player_sprite = player_spritesheet.subsurface((12, 0, 6, 6))
+        elif self.dir == "down":
+            player_sprite = player_spritesheet.subsurface((18, 0, 6, 6))
+        else:
+            player_sprite = player_spritesheet.subsurface((0, 0, 6, 6))
+
         player_sprite = pygame.transform.scale(player_sprite, (PLAYERSIZE, PLAYERSIZE))
         surface.blit(player_sprite, (self.x, self.y))
 
@@ -82,7 +102,12 @@ class Enemy(Entity):
         self.moving_down = moving_down
 
     def draw(self, surface):
-        basic_enemy_sprite = basic_enemy_spritesheet.subsurface((0, 0, 16, 16))
+        ticks = pygame.time.get_ticks() % (FPS * 20)
+        if ticks <= 120:
+            basic_enemy_sprite = basic_enemy_spritesheet.subsurface((16, 0, 8, 8))
+        else:
+            basic_enemy_sprite = basic_enemy_spritesheet.subsurface((8, 0, 8, 8))
+
         basic_enemy_sprite = pygame.transform.scale(basic_enemy_sprite, (PLAYERSIZE, PLAYERSIZE))
         surface.blit(basic_enemy_sprite, (self.x, self.y))
 
