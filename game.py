@@ -19,7 +19,7 @@ surface = pygame.Surface(GAMESIZE)
 
 state_manager = StateManager(screen, surface)
 
-pygame.display.set_caption("Super Awesome Omega game")
+pygame.display.set_caption("Connection: Requested")
 
 clock = pygame.time.Clock()
 running = True
@@ -40,6 +40,8 @@ txt_color = (0, 93, 182)
 pygame.mixer.init()
 music = pygame.mixer.Sound('Sounds/music.wav')
 music.play(loops=-1)
+
+pygame.display.set_icon(pygame.image.load('Images/icon.png'))
 
 # ============================== GAME LOOP ==============================
 while running:
