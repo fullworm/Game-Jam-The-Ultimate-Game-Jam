@@ -4,6 +4,7 @@ import math
 player_spritesheet = pygame.image.load("Images/playerSprites.png")
 basic_enemy_spritesheet = pygame.image.load("Images/basicEnemySprites.png")
 text_sheet = pygame.image.load("Images/text.png")
+terminal_sheet = pygame.image.load("Images/terminal.png")
 
 class Entity:
     def __init__(self, x, y):
@@ -234,18 +235,25 @@ class Message(Entity):
         surface.blit(text_surface, bg_rect)
 
 class Terminal(Entity):
-    def __init__(self, x, y, xsize, ysize):
+    def __init__(self, x, y, xsize, ysize, boy):
         super().__init__(x, y)
         self.xsize = xsize
         self.ysize = ysize
         self.rect = pygame.Rect(self.x, self.y, self.xsize, self.ysize)
         self.timer = 0
         self.done = False
+        self.boy = boy
 
     def draw(self, surface, player, next_state_func):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
 
-        pygame.draw.rect(surface, (255,0,0), self.rect)
+        if self.boy:
+            terminal_sprite = terminal_sheet.subsurface((0, 0, 16, 16))
+        else:
+            terminal_sprite = terminal_sheet.subsurface((16, 0, 16, 16))
+        terminal_sprite = pygame.transform.scale(terminal_sprite, (PLAYERSIZE, PLAYERSIZE))
+        surface.blit(terminal_sprite, (self.x, self.y))
+
         if self.done and self.timer > 0:
             self.render_text(surface, "Relationship progressed!")
             self.timer -= 1

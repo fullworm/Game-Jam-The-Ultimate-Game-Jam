@@ -39,37 +39,39 @@ class Room:
 
 
                     if (left, right, up, down) == (0, 0, 0, 0):
-                        wall_sprite = wall_spritesheet.subsurface((0, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((0, 0, 16, 16))
                     elif (left, right, up, down) == (0, 0, 0, 1):
-                        wall_sprite = wall_spritesheet.subsurface((8, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((16, 0, 16, 16))
                     elif (left, right, up, down) == (1, 0, 0, 0):
-                        wall_sprite = wall_spritesheet.subsurface((16, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((32, 0, 16, 16))
                     elif (left, right, up, down) == (0, 0, 1, 0):
-                        wall_sprite = wall_spritesheet.subsurface((24, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((48, 0, 16, 16))
                     elif (left, right, up, down) == (0, 1, 0, 0):
-                        wall_sprite = wall_spritesheet.subsurface((32, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((64, 0, 16, 16))
                     elif (left, right, up, down) == (1, 0, 0, 1):
-                        wall_sprite = wall_spritesheet.subsurface((40, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((80, 0, 16, 16))
                     elif (left, right, up, down) == (1, 0, 1, 0):
-                        wall_sprite = wall_spritesheet.subsurface((48, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((96, 0, 16, 16))
                     elif (left, right, up, down) == (0, 1, 1, 0):
-                        wall_sprite = wall_spritesheet.subsurface((56, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((112, 0, 16, 16))
                     elif (left, right, up, down) == (0, 1, 0, 1):
-                        wall_sprite = wall_spritesheet.subsurface((64, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((128, 0, 16, 16))
                     elif (left, right, up, down) == (0, 0, 1, 1):
-                        wall_sprite = wall_spritesheet.subsurface((72, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((144, 0, 16, 16))
                     elif (left, right, up, down) == (1, 1, 0, 0):
-                        wall_sprite = wall_spritesheet.subsurface((80, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((160, 0, 16, 16))
                     elif (left, right, up, down) == (1, 1, 0, 1):
-                        wall_sprite = wall_spritesheet.subsurface((88, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((176, 0, 16, 16))
                     elif (left, right, up, down) == (1, 0, 1, 1):
-                        wall_sprite = wall_spritesheet.subsurface((96, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((192, 0, 16, 16))
                     elif (left, right, up, down) == (1, 1, 1, 0):
-                        wall_sprite = wall_spritesheet.subsurface((104, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((208, 0, 16, 16))
                     elif (left, right, up, down) == (0, 1, 1, 1):
-                        wall_sprite = wall_spritesheet.subsurface((112, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((224, 0, 16, 16))
                     elif (left, right, up, down) == (1, 1, 1, 1):
-                        wall_sprite = wall_spritesheet.subsurface((120, 0, 8, 8))
+                        wall_sprite = wall_spritesheet.subsurface((240, 0, 16, 16))
+                    else:
+                        wall_sprite = wall_spritesheet.subsurface((0, 0, 16, 16))
 
                     wall_sprite = pygame.transform.scale(wall_sprite, (TILESIZE, TILESIZE))
                     surface.blit(wall_sprite, (x * TILESIZE, y * TILESIZE))

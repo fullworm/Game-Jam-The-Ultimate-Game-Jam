@@ -28,7 +28,7 @@ lvl1Start = Room.Room(
     None,
 
     (int(5.5 * TILESIZE), int(5.5 * TILESIZE)),
-    terminal=entities.Terminal(5.5 * TILESIZE, 2* TILESIZE, PLAYERSIZE, PLAYERSIZE)
+    terminal=entities.Terminal(5.5 * TILESIZE, 2* TILESIZE, PLAYERSIZE, PLAYERSIZE, False)
 )
 lvl1Left = Room.Room(
     {"Up": None,
@@ -161,7 +161,7 @@ lvl2Start = Room.Room(
     None,
 
     (int(5.5 * TILESIZE), int(5.5 * TILESIZE)),
-    terminal=entities.Terminal(6 * TILESIZE, TILESIZE, PLAYERSIZE, PLAYERSIZE)
+    terminal=entities.Terminal(6 * TILESIZE, TILESIZE, PLAYERSIZE, PLAYERSIZE, True)
 )
 lvl2Left = Room.Room(
     {"Up": "Down",
@@ -294,7 +294,7 @@ lvl3Start = Room.Room(
     None,
 
     (int(5.5 * TILESIZE), int(5.5 * TILESIZE)),
-    terminal=entities.Terminal(6 * TILESIZE, TILESIZE, PLAYERSIZE, PLAYERSIZE)
+    terminal=entities.Terminal(6 * TILESIZE, TILESIZE, PLAYERSIZE, PLAYERSIZE, False)
 )
 lvl3Left = Room.Room(
     {"Up": None,
