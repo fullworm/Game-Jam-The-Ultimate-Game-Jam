@@ -6,6 +6,14 @@ basic_enemy_spritesheet = pygame.image.load("Images/basicEnemySprites.png")
 text_sheet = pygame.image.load("Images/text.png")
 terminal_sheet = pygame.image.load("Images/terminal.png")
 import random
+
+PLAYER_SPRITES = {
+    "left": pygame.transform.scale(player_spritesheet.subsurface((0, 0, 12, 12)), (PLAYERSIZE, PLAYERSIZE)),
+    "up": pygame.transform.scale(player_spritesheet.subsurface((12, 0, 12, 12)), (PLAYERSIZE, PLAYERSIZE)),
+    "right": pygame.transform.scale(player_spritesheet.subsurface((24, 0, 12, 12)), (PLAYERSIZE, PLAYERSIZE)),
+    "down": pygame.transform.scale(player_spritesheet.subsurface((36, 0, 12, 12)), (PLAYERSIZE, PLAYERSIZE)),
+}
+
 class Entity:
     def __init__(self, x, y):
         self.x = x
@@ -27,10 +35,11 @@ class Entity:
 
     def collides_with_enemy(self, enemies):
         for enemy in enemies:
-            xcoll = (enemy.x < self.x < enemy.x + enemy.xsize) or (enemy.x < self.x + PLAYERSIZE < enemy.x + enemy.xsize)
-            ycoll = (enemy.y < self.y < enemy.y + enemy.ysize) or (enemy.y < self.y + PLAYERSIZE < enemy.y + enemy.ysize)
-            if xcoll and ycoll:
-                return True
+            if isinstance(enemy, Enemy):
+                xcoll = (enemy.x < self.x < enemy.x + enemy.xsize) or (enemy.x < self.x + PLAYERSIZE < enemy.x + enemy.xsize)
+                ycoll = (enemy.y < self.y < enemy.y + enemy.ysize) or (enemy.y < self.y + PLAYERSIZE < enemy.y + enemy.ysize)
+                if xcoll and ycoll:
+                    return True
 
     def move(self, x, y, room):
         self.x += x
@@ -80,17 +89,7 @@ class Player(Entity):
         if room.entities is not None:
             if self.collides_with_enemy(room.entities):
                 self.x, self.y = room.spawn
-
-        if self.dir == "left":
-            player_sprite = player_spritesheet.subsurface((0, 0, 12, 12))
-        elif self.dir == "up":
-            player_sprite = player_spritesheet.subsurface((12, 0, 12, 12))
-        elif self.dir == "right":
-            player_sprite = player_spritesheet.subsurface((24, 0, 12, 12))
-        elif self.dir == "down":
-            player_sprite = player_spritesheet.subsurface((36, 0, 12, 12))
-        else:
-            player_sprite = player_spritesheet.subsurface((0, 0, 12, 12))
+        player_sprite = PLAYER_SPRITES[self.dir]
 
         player_sprite = pygame.transform.scale(player_sprite, (PLAYERSIZE, PLAYERSIZE))
         surface.blit(player_sprite, (self.x, self.y))
@@ -226,6 +225,51 @@ class Enemy(Entity):
         self.x = self.startx
         self.y = self.starty
             
+class Turret(Entity):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.shoot_anlgle_ofset = 0
+        self.rect = pygame.Rect(self.x, self.y, TILESIZE, TILESIZE)
+        self.shooting_point = pygame.math.Vector2(self.x + TILESIZE // 2, self.y + TILESIZE // 2)
+        self.projectiles = []
+        self.timer = 50
+
+    def shoot(self):
+        num_of_bullets = 36
+        angleStep = 360 / num_of_bullets
+        
+        for i in range (num_of_bullets):
+            angle = i * angleStep + self.shoot_anlgle_ofset
+          
+            angle_rad = math.radians(angle)
+            
+            dir_x = math.cos(angle_rad)
+            dir_y = math.sin(angle_rad)
+            direction_vector = pygame.math.Vector2(dir_x, dir_y)
+            
+            
+            bullet = Projectile(self.shooting_point.x, self.shooting_point.y, direction_vector)
+            self.projectiles.append(bullet)
+            self.shoot_anlgle_ofset += 10
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, (155,12,3),self.rect, 0)
+    def update(self, player, room, surface):
+        
+        if self.timer > 0:
+            self.timer -= 1
+        else:
+            self.shoot()       
+            self.timer = 50  
+          
+        for p in self.projectiles:
+            p.update(player, room, surface)
+            
+        self.projectiles = [p for p in self.projectiles if not p.delete]
+    def reset(self):
+        self.projectiles = []
+        self.shoot_anlgle_ofset = 0
+        self.timer = 50
 
 class Message(Entity):
     def __init__(self, x, y, xsize, ysize, text, boy):
@@ -237,6 +281,7 @@ class Message(Entity):
         self.text = text
         self.timer = 0
         self.boy = boy
+        self.font = pygame.font.Font(None, 36)
 
     def draw(self, surface, player):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
@@ -260,9 +305,7 @@ class Message(Entity):
             self.timer -= 1
     
     def render_text(self, surface):
-        font = pygame.font.Font(None, 36)
-    
-        text_surface = font.render(self.text, True, (255, 255, 255))
+        text_surface = self.font.render(self.text, True, (255, 255, 255))
         
         bg_rect = text_surface.get_rect(center=(GAMEX // 2, GAMEY - 50))
         pygame.draw.rect(surface, (0, 0, 0), bg_rect.inflate(20, 10))
@@ -278,6 +321,7 @@ class Terminal(Entity):
         self.timer = 0
         self.done = False
         self.boy = boy
+        self.font = pygame.font.Font(None, 36)
 
     def draw(self, surface, player, next_state_func):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
@@ -305,9 +349,7 @@ class Terminal(Entity):
 
 
     def render_text(self, surface, text):
-        font = pygame.font.Font(None, 36)
-    
-        text_surface = font.render(text, True, (255, 255, 255))
+        text_surface = self.font.render(text, True, (255, 255, 255))
         
         bg_rect = text_surface.get_rect(center=(GAMEX // 2, GAMEY - 50))
         pygame.draw.rect(surface, (0, 0, 0), bg_rect.inflate(20, 10))

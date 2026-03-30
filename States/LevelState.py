@@ -85,27 +85,33 @@ class LevelState(state):
         if self.room.entities is not None:
             for enemy in self.room.entities:
                 enemy.draw(self.surface)
-                if enemy.shoots and enemy.random_movement:
-                    enemy.shoot(self.player)
-                    enemy.move_bounce(self.player, self.room)
-                    for p in enemy.projectiles:
-                        p.update(self.player, self.room, self.surface)
-                    enemy.projectiles = [p for p in enemy.projectiles if not p.delete]
-                elif enemy.shoots:
-                    enemy.shoot(self.player)
-                    enemy.move_bounce(self.player, self.room)
-                    for p in enemy.projectiles:
-                        p.update(self.player, self.room, self.surface)
-                    enemy.projectiles = [p for p in enemy.projectiles if not p.delete]
-                elif enemy.random_movement:
-                    enemy.move_bounce(self.player, self.room)
-                else:
-                    enemy.move_to_player(self.player)
-                    if enemy.x >= 8.5 * TILESIZE:
-                            enemy.move(-(ENEMYSPEED/2), 0, self.room)
+                if isinstance(enemy, entities.Enemy):
 
+                    if enemy.shoots and enemy.random_movement:
+                        enemy.shoot(self.player)
+                        enemy.move_bounce(self.player, self.room)
+                        for p in enemy.projectiles:
+                            p.update(self.player, self.room, self.surface)
+                        enemy.projectiles = [p for p in enemy.projectiles if not p.delete]
+                    elif enemy.shoots:
+                        enemy.shoot(self.player)
+                        enemy.move_bounce(self.player, self.room)
+                        for p in enemy.projectiles:
+                            p.update(self.player, self.room, self.surface)
+                        enemy.projectiles = [p for p in enemy.projectiles if not p.delete]
+                    elif enemy.random_movement:
+                        enemy.move_bounce(self.player, self.room)
+                    else:
+                        enemy.move_to_player(self.player)
+                        if enemy.x >= 8.5 * TILESIZE:
+                                enemy.move(-(ENEMYSPEED/2), 0, self.room)
 
+                elif isinstance(enemy, entities.Turret):
+                    enemy.draw(self.surface)
+                    enemy.update(self.player, self.room, self.surface)
+                
 
+        
 
         if self.room.collectable is not None:
             self.room.collectable.draw(self.surface, self.player)
@@ -115,7 +121,7 @@ class LevelState(state):
         self.player.draw(self.surface, self.room)
 
         # a BUNCH of custom room instructions for enemies
-        if self.room == lvl1Down:
+        if self.room == lvl1Down or self.room == lvl3Down:
             for enemy in self.room.entities:
                 if enemy.x <= TILESIZE:
                     enemy.moving_right = True
@@ -138,6 +144,7 @@ class LevelState(state):
                     enemy.moving_down += 1
                 if enemy.y > GAMEY:
                     enemy.moving_down -= 2
+
 
 
 

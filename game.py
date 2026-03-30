@@ -1,12 +1,16 @@
-import pygame, entities, levels
+import pygame
+
+pygame.init()
+pygame.font.init()
+
+import entities, levels
 
 from States.State import state
 from constants import *
 from States.StateManager import StateManager
 
 # -------------------- Setup --------------------
-pygame.init()
-pygame.font.init()
+
 screen = pygame.display.set_mode(SCREENSIZE)
 surface = pygame.Surface(GAMESIZE)
 
