@@ -5,7 +5,7 @@ player_spritesheet = pygame.image.load("Images/playerSprites.png")
 basic_enemy_spritesheet = pygame.image.load("Images/basicEnemySprites.png")
 text_sheet = pygame.image.load("Images/text.png")
 terminal_sheet = pygame.image.load("Images/terminal.png")
-
+import random
 class Entity:
     def __init__(self, x, y):
         self.x = x
@@ -128,7 +128,7 @@ class Projectile(Entity):
             room.reset(player)
 
 class Enemy(Entity):
-    def __init__(self, x, y, xsize, ysize, moving_right, moving_down, speed = 0, shoots = False, moves = False):
+    def __init__(self, x, y, xsize, ysize, moving_right, moving_down, speed = 0, shoots = False, moves = False, random_m = False):
         super().__init__(x, y)
         self.xsize = xsize
         self.ysize = ysize
@@ -141,6 +141,14 @@ class Enemy(Entity):
         self.timer = 0
         self.projectiles = []
         self.move_to_p = moves
+        self.random_movement = random_m
+        
+        self.angle = math.radians(random.randint(0, 360))
+        self.velocity = pygame.math.Vector2(math.cos(self.angle), math.sin(self.angle)) * self.speed
+
+        self.float_x = float(x)
+        self.float_y = float(y)
+        self.rect = pygame.Rect(self.x, self.y, PLAYERSIZE, PLAYERSIZE)
 
     def draw(self, surface):
         ticks = pygame.time.get_ticks() % (FPS * 20)
@@ -157,20 +165,47 @@ class Enemy(Entity):
         self.y += y
     
     def move_to_player(self, player):
-
         enemy_vec = pygame.math.Vector2(self.x, self.y)
         player_vec = pygame.math.Vector2(player.x, player.y)
-
         to_player = player_vec - enemy_vec
-        
-        angle_to_player = math.degrees(-math.atan2(to_player.x, to_player.y))
-        self.enemyOrientation = angle_to_player
-
         
         if to_player.length() > 0:
             move_vector = to_player.normalize() * self.speed
-            self.x += move_vector.x
-            self.y += move_vector.y
+            self.x += move_vector.x * self.speed
+            self.y += move_vector.y * self.speed
+
+    def move_bounce(self, player, room):
+        self.float_x += self.velocity.x
+        self.float_y += self.velocity.y
+        
+       
+        temp_x = int(self.float_x)
+        temp_y = int(self.float_y)
+
+       
+        self.x = max(0, min(temp_x, GAMEX - PLAYERSIZE - 1))
+        self.y = max(0, min(temp_y, GAMEY - PLAYERSIZE - 1))
+
+        
+        if self.collides_with_wall(room.walls):
+            
+            self.float_x -= self.velocity.x
+            self.x = max(0, min(int(self.float_x), GAMEX - PLAYERSIZE - 1))
+            self.velocity.x *= -1 
+
+        
+        if self.collides_with_wall(room.walls):
+            
+            self.float_y -= self.velocity.y
+            self.y = max(0, min(int(self.float_y), GAMEY - PLAYERSIZE - 1))
+            self.velocity.y *= -1 
+        
+        
+        self.rect.topleft = (self.x, self.y)
+    
+        player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
+        if self.rect.colliderect(player_rect):
+            room.reset(player)
     
     def shoot(self, player):
         if self.timer > 0:

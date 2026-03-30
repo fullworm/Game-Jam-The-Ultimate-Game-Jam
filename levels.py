@@ -182,12 +182,12 @@ lvl2Left = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy(3 * TILESIZE, 3 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, shoots=True),
-     entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, shoots=True),
-     entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=2),],
+    [entities.Enemy(10 * TILESIZE,  TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, shoots=True),
+     entities.Enemy(10 * TILESIZE, 10* TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, shoots=True),
+     entities.Enemy(8 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=2),],
 
     (int(TILESIZE), int(5.5 * TILESIZE)),
-    collectable=entities.Message(2 * TILESIZE, 6 * TILESIZE, 20, 20, "so prety", False)
+    collectable=entities.Message(6 * TILESIZE, 5.5 * TILESIZE, 20, 20, "so prety", False)
 )
 lvl2Right = Room.Room(
     {"Up": None,
@@ -208,7 +208,9 @@ lvl2Right = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [],
+    [entities.Enemy(3 * TILESIZE, 3 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves= True,random_m=True, speed=2),
+     entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves= True,random_m=True, speed=2),
+     entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves= True, random_m=True, speed=2)],
 
     (int(TILESIZE), int(5.5 * TILESIZE)), 
     collectable=entities.Message(10 * TILESIZE, 6 * TILESIZE, 20, 20, "ultimate rizz", False)
@@ -233,12 +235,12 @@ lvl2Down = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy(2 * TILESIZE, 4 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False),
-     entities.Enemy(9 * TILESIZE, 6 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False),
-     entities.Enemy(2 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False),],
+    [entities.Enemy(2* TILESIZE,  2*TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False, shoots=True),
+     entities.Enemy(5.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, random_m=True, shoots=True, speed=1.6),
+     entities.Enemy(8 * TILESIZE,  2*TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False, shoots=True),],
 
     (int(5.5 * TILESIZE), int(10 * TILESIZE)),
-    collectable=entities.Message(6 * TILESIZE, 10 * TILESIZE, 20, 20, "-30 aura", False)
+    collectable=entities.Message(6 * TILESIZE, 2 * TILESIZE, 20, 20, "-30 aura", False)
 
 )
 lvl2Exit = Room.Room(

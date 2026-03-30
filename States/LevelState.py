@@ -85,12 +85,21 @@ class LevelState(state):
         if self.room.entities is not None:
             for enemy in self.room.entities:
                 enemy.draw(self.surface)
-                if enemy.shoots:
+                if enemy.shoots and enemy.random_movement:
                     enemy.shoot(self.player)
+                    enemy.move_bounce(self.player, self.room)
                     for p in enemy.projectiles:
                         p.update(self.player, self.room, self.surface)
                     enemy.projectiles = [p for p in enemy.projectiles if not p.delete]
-                if enemy.move_to_p:
+                elif enemy.shoots:
+                    enemy.shoot(self.player)
+                    enemy.move_bounce(self.player, self.room)
+                    for p in enemy.projectiles:
+                        p.update(self.player, self.room, self.surface)
+                    enemy.projectiles = [p for p in enemy.projectiles if not p.delete]
+                elif enemy.random_movement:
+                    enemy.move_bounce(self.player, self.room)
+                else:
                     enemy.move_to_player(self.player)
                     if enemy.x >= 8.5 * TILESIZE:
                             enemy.move(-(ENEMYSPEED/2), 0, self.room)
