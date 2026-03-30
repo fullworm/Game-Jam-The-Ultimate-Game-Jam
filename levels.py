@@ -28,7 +28,8 @@ lvl1Start = Room.Room(
     None,
 
     (int(5.5 * TILESIZE), int(5.5 * TILESIZE)),
-    terminal=entities.Terminal(5.5 * TILESIZE, 2* TILESIZE, PLAYERSIZE, PLAYERSIZE, False)
+    terminal=entities.Terminal(5.5 * TILESIZE, 2* TILESIZE, TILESIZE, TILESIZE, False),
+    boy=True
 )
 lvl1Left = Room.Room(
     {"Up": None,
@@ -49,12 +50,13 @@ lvl1Left = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy(3 * TILESIZE, 3 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=2),
-     entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=2),
-     entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=2),],
+    [entities.Enemy(3 * TILESIZE, 3 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=1),
+     entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=1),
+     entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=1),],
 
     (int(9.5 * TILESIZE), int(5.5 * TILESIZE)),
-    collectable=entities.Message(2 * TILESIZE, 5.5 * TILESIZE, PLAYERSIZE, PLAYERSIZE, "so prety", True)
+    collectable=entities.Message(2 * TILESIZE, 5.5 * TILESIZE, PLAYERSIZE, PLAYERSIZE, "*Hey... We've known each other for some time*", True, id=2),
+    boy=True
 )
 lvl1Right = Room.Room(
     {"Up": None,
@@ -75,12 +77,12 @@ lvl1Right = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy(4 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1),
-     entities.Enemy(7 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1),],
+    [entities.Enemy(4 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1, laser=1),
+     entities.Enemy(7 * TILESIZE, 1 * TILESIZE, TILESIZE, 10 * TILESIZE, False, 1, laser=1),],
 
     (int(2.5 * TILESIZE), int(5.5 * TILESIZE)), 
-    collectable=entities.Message(10 * TILESIZE, 5.5 * TILESIZE, PLAYERSIZE, PLAYERSIZE, "ultimate rizz", True)
-
+    collectable=entities.Message(10 * TILESIZE, 5.5 * TILESIZE, PLAYERSIZE, PLAYERSIZE, "*Would you like to go on a date with me?*", True, id=5),
+    boy=True
 )
 lvl1Down = Room.Room(
     {"Up": "Start",
@@ -106,7 +108,8 @@ lvl1Down = Room.Room(
      entities.Enemy(2 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False),],
 
     (int(5.5 * TILESIZE), int(2.5 * TILESIZE)),
-    collectable=entities.Message(5.5 * TILESIZE, 10 * TILESIZE, PLAYERSIZE, PLAYERSIZE, "-30 aura", True)
+    collectable=entities.Message(5.5 * TILESIZE, 10 * TILESIZE, PLAYERSIZE, PLAYERSIZE, "*I've been afraid to ask...*", True, id=3),
+    boy=True
 
 )
 lvl1Exit = Room.Room(
@@ -130,7 +133,9 @@ lvl1Exit = Room.Room(
 
     None,
 
-    None
+    None,
+    boy=True
+
 )
 lvl1 = {"Start": lvl1Start,
         "Left": lvl1Left,
@@ -161,7 +166,9 @@ lvl2Start = Room.Room(
     None,
 
     (int(5.5 * TILESIZE), int(5.5 * TILESIZE)),
-    terminal=entities.Terminal(6 * TILESIZE, TILESIZE, PLAYERSIZE, PLAYERSIZE, True)
+    terminal=entities.Terminal(5.5 * TILESIZE, 2.5*TILESIZE, TILESIZE, TILESIZE, True),
+    boy=False
+
 )
 lvl2Left = Room.Room(
     {"Up": "Down",
@@ -184,10 +191,12 @@ lvl2Left = Room.Room(
 
     [entities.Enemy(10 * TILESIZE,  TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, shoots=True),
      entities.Enemy(10 * TILESIZE, 10* TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, shoots=True),
-     entities.Enemy(8 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=2),],
+     entities.Enemy(8 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, speed=1.5),],
 
-    (int(TILESIZE), int(5.5 * TILESIZE)),
-    collectable=entities.Message(6 * TILESIZE, 5.5 * TILESIZE, 20, 20, "so prety", False)
+    (int(2.5* TILESIZE), int(5.5 * TILESIZE)),
+    collectable=entities.Message(5.5 * TILESIZE, 5.5 * TILESIZE, 20, 20, "*What kind of question is that??*", False, id=3),
+    boy=False
+
 )
 lvl2Right = Room.Room(
     {"Up": None,
@@ -212,8 +221,9 @@ lvl2Right = Room.Room(
      entities.Enemy(3 * TILESIZE, 8 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves= True,random_m=True, speed=2),
      entities.Enemy(6.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves= True, random_m=True, speed=2)],
 
-    (int(TILESIZE), int(5.5 * TILESIZE)), 
-    collectable=entities.Message(10 * TILESIZE, 6 * TILESIZE, 20, 20, "ultimate rizz", False)
+    (int(2.5*TILESIZE), int(5.5 * TILESIZE)),
+    collectable=entities.Message(5.5 * TILESIZE, 9.5 * TILESIZE, 20, 20, "*Me? on a date with you?*", False, id=2),
+    boy=False
 
 )
 lvl2Down = Room.Room(
@@ -239,8 +249,9 @@ lvl2Down = Room.Room(
      entities.Enemy(5.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves=True, random_m=True, shoots=True, speed=1.6),
      entities.Enemy(8 * TILESIZE,  2*TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, True, False, shoots=True),],
 
-    (int(5.5 * TILESIZE), int(10 * TILESIZE)),
-    collectable=entities.Message(6 * TILESIZE, 2 * TILESIZE, 20, 20, "-30 aura", False)
+    (int(5.5 * TILESIZE), int(9.5 * TILESIZE)),
+    collectable=entities.Message(5.5 * TILESIZE, 2.5 * TILESIZE, 20, 20, "*Of course I would love to! <3*", False, id=5),
+    boy=False
 
 )
 lvl2Exit = Room.Room(
@@ -264,7 +275,9 @@ lvl2Exit = Room.Room(
 
     None,
 
-    None
+    None,
+    boy=False
+
 )
 lvl2 = {"Start": lvl2Start,
         "Left": lvl2Left,
@@ -296,7 +309,9 @@ lvl3Start = Room.Room(
     None,
 
     (int(5.5 * TILESIZE), int(5.5 * TILESIZE)),
-    terminal=entities.Terminal(6 * TILESIZE, TILESIZE, PLAYERSIZE, PLAYERSIZE, False)
+    terminal=entities.Terminal(5.5 * TILESIZE, 2.5*TILESIZE, TILESIZE, TILESIZE, False),
+    boy=True
+
 )
 lvl3Left = Room.Room(
     {"Up": None,
@@ -324,7 +339,9 @@ lvl3Left = Room.Room(
      entities.Enemy(10* TILESIZE, 10 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves= True, shoots=True, speed=2, random_m=True)],
 
     (int(TILESIZE), int(5.5 * TILESIZE)),
-    collectable=entities.Message(2 * TILESIZE, 6 * TILESIZE, 20, 20, "so prety", True)
+    collectable=entities.Message(9.5 * TILESIZE, 2.5 * TILESIZE, 20, 20, "*Then... let's connect tomorrow, deal?*", True, id=3),
+    boy=True
+
 )
 lvl3Right = Room.Room(
     {"Up": "Start",
@@ -345,10 +362,11 @@ lvl3Right = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Turret(5 * TILESIZE, 5 * TILESIZE)],
+    [entities.Turret(5.5 * TILESIZE, 5.5 * TILESIZE)],
 
-    (int(5.5 * TILESIZE), int(TILESIZE)), 
-    collectable=entities.Message(10 * TILESIZE, 6 * TILESIZE, 20, 20, "ultimate rizz", True)
+    (int(5.5 * TILESIZE), int(TILESIZE)),
+    collectable=entities.Message(2.5 * TILESIZE, 9.5 * TILESIZE, 20, 20, "*Wait, you do?*", True, id=2),
+    boy=True
 
 )
 lvl3Down = Room.Room(
@@ -370,12 +388,13 @@ lvl3Down = Room.Room(
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
-    [entities.Enemy( TILESIZE, 3 * TILESIZE, TILESIZE, 10 * TILESIZE, moving_right=True, moving_down=False),
-     entities.Enemy( TILESIZE, 7 * TILESIZE, TILESIZE, 10 * TILESIZE, moving_right=False, moving_down=False),
+    [entities.Enemy( TILESIZE, 3 * TILESIZE, 10* TILESIZE, TILESIZE, moving_right=False, moving_down=1, laser=2),
+     entities.Enemy( TILESIZE, 7 * TILESIZE, 10* TILESIZE, TILESIZE, moving_right=False, moving_down=1, laser=2),
      entities.Enemy(5.5 * TILESIZE, 5.5 * TILESIZE, BASICENEMYSIZE, BASICENEMYSIZE, False, False, moves= True, shoots=True, speed=2, random_m=True),],
 
     (int(5.5 * TILESIZE), int(TILESIZE)),
-    collectable=entities.Message(6 * TILESIZE, 10 * TILESIZE, 20, 20, "-30 aura", True)
+    collectable=entities.Message(5.5 * TILESIZE, 9.5 * TILESIZE, 20, 20, "*See you then!*", True, id=5),
+    boy=True
 
 )
 lvl3Exit = Room.Room(
@@ -399,7 +418,9 @@ lvl3Exit = Room.Room(
 
     None,
 
-    None
+    None,
+    boy = True
+
 )
 lvl3 = {"Start": lvl3Start,
         "Left": lvl3Left,

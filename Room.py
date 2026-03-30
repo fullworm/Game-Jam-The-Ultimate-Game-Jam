@@ -4,13 +4,14 @@ from constants import *
 wall_spritesheet = pygame.image.load("Images/wall.png")
 
 class Room:
-    def __init__(self, adjacent_rooms, walls, enemies, spawn, collectable = None, terminal = None):
+    def __init__(self, adjacent_rooms, walls, enemies, spawn, collectable = None, terminal = None, boy = True):
         self.adjacent_rooms = adjacent_rooms
         self.walls: list[list] = walls
         self.entities: list = enemies
         self.spawn = spawn
         self.collectable = collectable
         self.terminal = terminal
+        self.boy = boy
 
     def draw(self, surface):
         for y in range(len(self.walls)):

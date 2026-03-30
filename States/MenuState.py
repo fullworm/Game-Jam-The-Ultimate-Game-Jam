@@ -1,3 +1,4 @@
+import pygame
 from States.State import state
 from pygame_widgets.button import ButtonArray
 from constants import *
@@ -9,16 +10,20 @@ class MenuState(state):
                 # Mandatory Parameters
             self.surface,  # Surface to place button array on
             (SCREENX - 700) // 2,  # X-coordinate
-            (SCREENY+200) // 2,  # Y-coordinate
+            (SCREENY+50) // 2,  # Y-coordinate
             700,  # Width
             200,  # Height
             (3, 1),
-            border=30,  # Distance between buttons and edge of array
-            texts=('play', 'Creds', 'Exit'),  # Sets the texts of each button (counts left to right then top to bottom)
-            onClicks=(lambda: self.set_next_state("LevelChooseState"), lambda: print('creds'), lambda: exit()),
-            colour=(0, 0, 0),
-            hoverColours=((0, 255, 255), (0, 255, 255), (0, 255, 255)),
-            inactiveColours=((50, 150, 150),(50, 150, 150),(50, 150, 150))
+            border=20,  # Distance between buttons and edge of array
+            texts=('Play', 'Credits', 'Exit Game'),  # Sets the texts of each button (counts left to right then top to bottom)
+            onClicks=(lambda: (self.set_next_state("LevelChooseState"), self.buttonClick.play()),
+                      lambda: (self.set_next_state("CreditsState"), self.buttonClick.play()),
+                      lambda: (self.buttonClick.play(), exit())),
+            colour=(37, 47, 18),
+            hoverColours=((106, 134, 53), (106, 134, 53), (106, 134, 53),),
+            inactiveColours=((153, 194, 77),(153, 194, 77),(153, 194, 77),),
+            fonts=(self.font, self.font, self.font),
+
         )
         
     def update(self, events = None):

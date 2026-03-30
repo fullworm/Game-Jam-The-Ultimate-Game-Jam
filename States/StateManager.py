@@ -1,3 +1,4 @@
+from States.CreditsState import CreditsState
 from States.State import state
 from constants import *
 from States.MenuState import MenuState
@@ -21,6 +22,15 @@ class StateManager(state):
                 self.state.clean_up()
                 # self.playSurface.fill((210, 210, 180))
                 self.state = LevelChooseState(self.surface)
+                self.playing = False
+            elif (next == "MenuState"):
+                self.state.clean_up()
+                self.state = MenuState(self.surface)
+                self.playing = False
+            elif (next == "CreditsState"):
+                self.state.clean_up()
+                # self.playSurface.fill((210, 210, 180))
+                self.state = CreditsState(self.surface)
                 self.playing = False
             elif (next == "Level 1"):
                 self.state.clean_up()

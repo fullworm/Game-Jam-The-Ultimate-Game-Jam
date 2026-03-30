@@ -8,21 +8,22 @@ class LevelChooseState(state):
 
         self.LevelArray = ButtonArray(
             self.surface,
-            (SCREENX - 600) // 2,
-            (SCREENY - 300) // 2,
-            600,
-            300,
-            (5, 1),
+            (SCREENX - 700) // 2,  # X-coordinate
+            (SCREENY + 50) // 2,  # Y-coordinate
+            700,
+            200,
+            (4, 1),
             border = 20,
-            texts=('Level 1 ', "Level 2 ", "Level 3 ", "Level 4 ", "Level 5 "),
-            hoverColours=((0, 255, 255),(0, 255, 255),(0, 255, 255),(0, 255, 255),(0, 255, 255),),
-            inactiveColours=((50, 150, 150),(50, 150, 150),(50, 150, 150),(50, 150, 150),(50, 150, 150),),
+            texts=('Level 1', "Level 2", "Level 3","Return"),
+            colour=(37, 47, 18),
+            hoverColours=((106, 134, 53), (106, 134, 53), (106, 134, 53),(106, 134, 53),),
+            inactiveColours=((153, 194, 77),(153, 194, 77),(153, 194, 77),(153, 194, 77),),
+            fonts=(self.font, self.font, self.font, self.font),
             onClicks=(
-                lambda: self.set_next_state("Level 1"), 
-                lambda: self.set_next_state("Level 2"), 
-                lambda: self.set_next_state("Level 3"), 
-                lambda: self.set_next_state("Level 4"), 
-                lambda: self.set_next_state("Level 5")
+                lambda: (self.set_next_state("Level 1"), self.buttonClick.play()),
+                lambda: (self.set_next_state("Level 2"), self.buttonClick.play()),
+                lambda: (self.set_next_state("Level 3"), self.buttonClick.play()),
+                lambda: (self.set_next_state("MenuState"), self.buttonClick.play()),
             )
         )
     def update(self, events= None):

@@ -3,8 +3,14 @@ from constants import *
 import math
 player_spritesheet = pygame.image.load("Images/playerSprites.png")
 basic_enemy_spritesheet = pygame.image.load("Images/basicEnemySprites.png")
+laser1_spritesheet = pygame.image.load("Images/laser1.png")
+laser2_spritesheet = pygame.image.load("Images/laser2.png")
 text_sheet = pygame.image.load("Images/text.png")
 terminal_sheet = pygame.image.load("Images/terminal.png")
+pygame.mixer.init()
+collision_snd = pygame.mixer.Sound("Sounds/collide.wav")
+collect_snd = pygame.mixer.Sound("Sounds/collect.wav")
+complete_snd = pygame.mixer.Sound("Sounds/complete.wav")
 import random
 
 PLAYER_SPRITES = {
@@ -84,11 +90,13 @@ class Player(Entity):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.MessageNumber = 0
+        self.MessageIDS = 1
 
     def draw(self, surface, room):
         if room.entities is not None:
             if self.collides_with_enemy(room.entities):
                 self.x, self.y = room.spawn
+                collision_snd.play()
         player_sprite = PLAYER_SPRITES[self.dir]
 
         player_sprite = pygame.transform.scale(player_sprite, (PLAYERSIZE, PLAYERSIZE))
@@ -124,10 +132,12 @@ class Projectile(Entity):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
         if self.rect.colliderect(player_rect):
             self.delete = True
-            room.reset(player)
+            player.x, player.y = room.spawn
+            collision_snd.play()
+
 
 class Enemy(Entity):
-    def __init__(self, x, y, xsize, ysize, moving_right, moving_down, speed = 0, shoots = False, moves = False, random_m = False):
+    def __init__(self, x, y, xsize, ysize, moving_right, moving_down, speed = 0, shoots = False, moves = False, random_m = False, laser = 0):
         super().__init__(x, y)
         self.xsize = xsize
         self.ysize = ysize
@@ -141,6 +151,7 @@ class Enemy(Entity):
         self.projectiles = []
         self.move_to_p = moves
         self.random_movement = random_m
+        self.laser = laser
         
         self.angle = math.radians(random.randint(0, 360))
         self.velocity = pygame.math.Vector2(math.cos(self.angle), math.sin(self.angle)) * self.speed
@@ -151,13 +162,32 @@ class Enemy(Entity):
 
     def draw(self, surface):
         ticks = pygame.time.get_ticks() % (FPS * 20)
-        if ticks <= 120:
-            basic_enemy_sprite = basic_enemy_spritesheet.subsurface((16, 0, 8, 8))
-        else:
-            basic_enemy_sprite = basic_enemy_spritesheet.subsurface((8, 0, 8, 8))
 
-        basic_enemy_sprite = pygame.transform.scale(basic_enemy_sprite, (PLAYERSIZE, PLAYERSIZE))
-        surface.blit(basic_enemy_sprite, (self.x, self.y))
+        if self.laser == 1:
+            if ticks <= 120:
+                laser1_sprite = laser1_spritesheet.subsurface((32, 0, 16, 160))
+            else:
+                laser1_sprite = laser1_spritesheet.subsurface((16, 0, 16, 160))
+
+            laser1_sprite = pygame.transform.scale(laser1_sprite, (TILESIZE, TILESIZE*10))
+            surface.blit(laser1_sprite, (self.x, self.y))
+        elif self.laser == 2:
+            if ticks <= 120:
+                laser2_sprite = laser2_spritesheet.subsurface((0, 32, 160, 16))
+            else:
+                laser2_sprite = laser2_spritesheet.subsurface((0, 16, 160, 16))
+
+            laser2_sprite = pygame.transform.scale(laser2_sprite, (TILESIZE*10, TILESIZE))
+            surface.blit(laser2_sprite, (self.x, self.y))
+        else:
+            if ticks <= 120:
+                basic_enemy_sprite = basic_enemy_spritesheet.subsurface((32, 0, 16, 16))
+            else:
+                basic_enemy_sprite = basic_enemy_spritesheet.subsurface((16, 0, 16, 16))
+
+            basic_enemy_sprite = pygame.transform.scale(basic_enemy_sprite, (TILESIZE, TILESIZE))
+            surface.blit(basic_enemy_sprite, (self.x, self.y))
+
 
     def move(self, x, y, room):
         self.x += x
@@ -181,9 +211,12 @@ class Enemy(Entity):
         temp_x = int(self.float_x)
         temp_y = int(self.float_y)
 
-       
-        self.x = max(0, min(temp_x, GAMEX - PLAYERSIZE - 1))
-        self.y = max(0, min(temp_y, GAMEY - PLAYERSIZE - 1))
+
+        if (self.x<=0 or (GAMEX - PLAYERSIZE - 1) < self.x) or (self.y<=0 or (GAMEY - PLAYERSIZE - 1) < self.y):
+            self.reset()
+
+        self.x = temp_x
+        self.y = temp_y
 
         
         if self.collides_with_wall(room.walls):
@@ -193,7 +226,7 @@ class Enemy(Entity):
             self.velocity.x *= -1 
 
         
-        if self.collides_with_wall(room.walls):
+        # if self.collides_with_wall(room.walls):
             
             self.float_y -= self.velocity.y
             self.y = max(0, min(int(self.float_y), GAMEY - PLAYERSIZE - 1))
@@ -204,8 +237,9 @@ class Enemy(Entity):
     
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
         if self.rect.colliderect(player_rect):
-            room.reset(player)
-    
+            player.x, player.y = room.spawn
+            collision_snd.play()
+
     def shoot(self, player):
         if self.timer > 0:
             self.timer -= 1
@@ -232,47 +266,55 @@ class Turret(Entity):
         self.rect = pygame.Rect(self.x, self.y, TILESIZE, TILESIZE)
         self.shooting_point = pygame.math.Vector2(self.x + TILESIZE // 2, self.y + TILESIZE // 2)
         self.projectiles = []
-        self.timer = 50
+        self.timer = 75
 
     def shoot(self):
-        num_of_bullets = 36
+        num_of_bullets = 18
         angleStep = 360 / num_of_bullets
-        
+
         for i in range (num_of_bullets):
             angle = i * angleStep + self.shoot_anlgle_ofset
-          
+
             angle_rad = math.radians(angle)
-            
+
             dir_x = math.cos(angle_rad)
             dir_y = math.sin(angle_rad)
             direction_vector = pygame.math.Vector2(dir_x, dir_y)
-            
-            
+
+
             bullet = Projectile(self.shooting_point.x, self.shooting_point.y, direction_vector)
             self.projectiles.append(bullet)
             self.shoot_anlgle_ofset += 10
 
     def draw(self, surface):
-        pygame.draw.rect(surface, (155,12,3),self.rect, 0)
+        ticks = pygame.time.get_ticks() % (FPS * 20)
+
+        if ticks <= 120:
+            basic_enemy_sprite = basic_enemy_spritesheet.subsurface((32, 0, 16, 16))
+        else:
+            basic_enemy_sprite = basic_enemy_spritesheet.subsurface((16, 0, 16, 16))
+
+        basic_enemy_sprite = pygame.transform.scale(basic_enemy_sprite, (TILESIZE, TILESIZE))
+        surface.blit(basic_enemy_sprite, (self.x, self.y))
     def update(self, player, room, surface):
-        
+
         if self.timer > 0:
             self.timer -= 1
         else:
-            self.shoot()       
-            self.timer = 50  
-          
+            self.shoot()
+            self.timer = 125
+
         for p in self.projectiles:
             p.update(player, room, surface)
-            
+
         self.projectiles = [p for p in self.projectiles if not p.delete]
     def reset(self):
         self.projectiles = []
         self.shoot_anlgle_ofset = 0
-        self.timer = 50
+        self.timer = 75
 
 class Message(Entity):
-    def __init__(self, x, y, xsize, ysize, text, boy):
+    def __init__(self, x, y, xsize, ysize, text, boy, id=1):
         super().__init__(x,y)
         self.xsize = xsize
         self.ysize = ysize
@@ -281,7 +323,7 @@ class Message(Entity):
         self.text = text
         self.timer = 0
         self.boy = boy
-        self.font = pygame.font.Font(None, 36)
+        self.id = id
 
     def draw(self, surface, player):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
@@ -289,7 +331,9 @@ class Message(Entity):
         if self.active and self.rect.colliderect(player_rect):
             self.active = False
             player.MessageNumber += 1
+            player.MessageIDS *= self.id
             self.timer = 120
+            collect_snd.play()
 
             
         if self.active:
@@ -305,7 +349,10 @@ class Message(Entity):
             self.timer -= 1
     
     def render_text(self, surface):
-        text_surface = self.font.render(self.text, True, (255, 255, 255))
+        font = pygame.font.Font("fonts/Jersey10-Regular.ttf", 36)
+
+        color = (0, 93, 182) if self.boy else (241, 52, 132)
+        text_surface = font.render(self.text, True, color)
         
         bg_rect = text_surface.get_rect(center=(GAMEX // 2, GAMEY - 50))
         pygame.draw.rect(surface, (0, 0, 0), bg_rect.inflate(20, 10))
@@ -321,7 +368,6 @@ class Terminal(Entity):
         self.timer = 0
         self.done = False
         self.boy = boy
-        self.font = pygame.font.Font(None, 36)
 
     def draw(self, surface, player, next_state_func):
         player_rect = pygame.Rect(player.x, player.y, PLAYERSIZE, PLAYERSIZE)
@@ -334,22 +380,25 @@ class Terminal(Entity):
         surface.blit(terminal_sprite, (self.x, self.y))
 
         if self.done and self.timer > 0:
-            self.render_text(surface, "Relationship progressed!")
+            self.render_text(surface, "Messages sent!")
             self.timer -= 1
         elif self.done and self.timer == 0:
             next_state_func("LevelChooseState")
         else:
             if self.rect.colliderect(player_rect):
                 if player.MessageNumber < 3:
-                    self.render_text(surface, f"{3-player.MessageNumber} Messages left to collect")
+                    self.render_text(surface, f"{3-player.MessageNumber} messages left to collect")
                 elif player.MessageNumber == 3:
                     self.done = True
                     self.timer = 120
-                    self.render_text(surface, "Relationship progressed!")
+                    self.render_text(surface, "Messages sent!")
+                    complete_snd.play()
 
 
     def render_text(self, surface, text):
-        text_surface = self.font.render(text, True, (255, 255, 255))
+        font = pygame.font.Font("fonts/Jersey10-Regular.ttf", 36)
+
+        text_surface = font.render(text, True, (255, 255, 255))
         
         bg_rect = text_surface.get_rect(center=(GAMEX // 2, GAMEY - 50))
         pygame.draw.rect(surface, (0, 0, 0), bg_rect.inflate(20, 10))
